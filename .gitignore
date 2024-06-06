@@ -1,4 +1,27 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+*.log
 
-src/__pycache__/
+# Ignore crash log files
+crash.log
 
+# Ignore execution plan files
+*.tfplan
+
+# Ignore backend configuration files
+*.tfbackend
+
+# Ignore .terraform directory
+.terraform/
+
+# Python cache directories
+**/__pycache__/
+
+# Data directory
 data/
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
