@@ -1,0 +1,9 @@
+infra/
+.venv/
+.vscode/
+examples/
+data/
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

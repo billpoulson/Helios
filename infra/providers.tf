@@ -1,5 +1,6 @@
 
 terraform {
+
   required_providers {
     randombyte = {
       source  = "Socolin/randombyte"
@@ -10,6 +11,10 @@ terraform {
     }
     helm = {
       source = "hashicorp/helm"
+    }
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 3.0"
     }
   }
 }

@@ -2,7 +2,10 @@ param (
   [string]$environment = ""
 )
 
-# Call the TF_VAR_Loader.ps1 script to load the environment variables based on the specified environments .env file 
+[System.Environment]::SetEnvironmentVariable("TF_LOG", "DEBUG")
+
 .\scripts\windows\TF_VAR_Loader.ps1 -environment $environment
 
-terraform -chdir=infra plan
+terraform -chdir=infra init -upgrade
+
+terraform -chdir=infra apply -auto-approve 
