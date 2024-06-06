@@ -33,3 +33,10 @@ output "strapi_jwt_secret" {
   value     = randombyte_bytes.strapi_jwt_secret.result_base64
   sensitive = true
 }
+
+output "porta_oauth_image_name" {
+  value = module.docker_module.porta_oauth_image_name
+}
+output "app_namespace" {
+  value = kubernetes_namespace_v1.sample_app.metadata[0].name
+}

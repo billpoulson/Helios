@@ -7,14 +7,12 @@ from uuid import uuid4
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
 from models import ClientCreate, ClientView
 from oauthlib.oauth2 import Server
 from request_validator import RequestValidator
 from secret_storage import SecretStorage
 
 # OAuth2 Request Validator
-
 oauth2 = Server(
     RequestValidator(),
 )
@@ -75,25 +73,6 @@ async def token(request: Request):
     for header, value in headers.items():
         response.headers[header] = value
     return response
-
-
-# OAuth2 Token endpoint
-# @app.post("/token2")
-# async def token(request: Request):
-#     print("test")
-#     headers, body, status_code = oauth2.create_token_response(
-#         uri=str(request.url),
-#         http_method=request.method,
-#         body=await request.body(),
-#         headers=dict(request.headers),
-#     )
-#     response = JSONResponse(content=body, status_code=status_code)
-#     for header, value in headers.items():
-#         response.headers[header] = value
-#     return response
-
-
-# Endpoint to serve the index.html file
 
 
 @app.get("/", response_class=FileResponse)
