@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  creationTimestamp: "2024-06-07T16:52:22Z"
+  finalizers:
+    - k8s.ngrok.com/finalizer
+  generation: 4
+  name: simple-oauth
+  namespace: my-sample-app
+  resourceVersion: "2789"
+  uid: 979e5bd5-3402-4507-a7da-02512c0d26fa
+spec:
+  ingressClassName: ngrok
+  rules:
+    - host: allowing-extremely-mole.ngrok-free.app
+      http:
+        paths:
+          - backend:
+              service:
+                name: simple-oauth
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+status:
+  loadBalancer: {}

@@ -5,6 +5,4 @@ envParam="$1"
 source ./scripts/unix/TF_VAR_Loader.sh "$envParam"
 
 # Apply terraform with the environment variables set by the loader script
-terraform -chdir=iac/terraform init -upgrade
-
-terraform -chdir=iac/terraform apply -auto-approve 
+terraform -chdir=iac/terraform destroy

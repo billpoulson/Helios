@@ -6,6 +6,4 @@ param (
 
 .\scripts\windows\TF_VAR_Loader.ps1 -environment $environment
 
-terraform -chdir=iac\terraform init -upgrade
-
-terraform -chdir=iac\terraform apply -auto-approve 
+terraform -chdir=iac\terraform destroy

@@ -100,7 +100,27 @@ def terraform_apply_env():
             [
                 bash,
                 os.path.join(
-                    os.path.dirname(__file__), platform, "Terraform-Apply-Env.sh"
+                    os.path.dirname(__file__), platform, "terraform-apply-env.sh"
+                ),
+            ]
+        )
+def terraform_destroy_env():
+    if platform == "windows":
+        subprocess.run(
+            [
+                "powershell",
+                "-Command",
+                os.path.join(
+                    os.path.dirname(__file__), platform, "terraform-destroy-env.ps1"
+                ),
+            ]
+        )
+    else:
+        subprocess.run(
+            [
+                bash,
+                os.path.join(
+                    os.path.dirname(__file__), platform, "terraform-destroy-env.sh"
                 ),
             ]
         )
@@ -140,6 +160,7 @@ def main():
             "docker_run",
             "dotenv_pull",
             "terraform_apply_env",
+            "terraform_destroy_env",
             "tf_var_loader",
         ],
         help="The command to execute",
@@ -158,6 +179,8 @@ def main():
         dotenv_pull()
     elif args.command == "terraform_apply_env":
         terraform_apply_env()
+    elif args.command == "terraform_destroy_env":
+        terraform_destroy_env()
     elif args.command == "tf_var_loader":
         tf_var_loader()
 
