@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const clientList = document.getElementById('clients');
   const generatePassphraseBtn = document.getElementById('generate-passphrase');
   const passphraseDisplay = document.getElementById('passphrase');
-
+  const baseUrl = document.querySelector('base').getAttribute('href'); // Access the base URL from the <base> element
   clientForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(clientForm);
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
 
     try {
-      const response = await fetch('/clients', {
+      const response = await fetch(`${baseUrl}/clients`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   generatePassphraseBtn.addEventListener('click', async () => {
     try {
-      const response = await fetch('/generate_passphrase', {
+      const response = await fetch(`${baseUrl}/generate_passphrase`, {
         method: 'GET'
       });
       if (response.ok) {
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   async function fetchClients() {
     try {
-      const response = await fetch('/clients');
+      const response = await fetch(`${baseUrl}/clients`);
       if (response.ok) {
         const clients = await response.json();
         clientList.innerHTML = ''; // Clear the existing list

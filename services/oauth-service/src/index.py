@@ -4,10 +4,11 @@ import logging
 from pathlib import Path
 from typing import List
 from uuid import uuid4
+from jinja2 import Template
 
 import uvicorn
 from fastapi import APIRouter, FastAPI, HTTPException, Request, Response, status
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from models import ClientCreate, ClientView
 from oauthlib.oauth2 import Server
 from request_validator import RequestValidator
@@ -103,7 +104,6 @@ async def token(request: Request):
         headers=dict(request.headers),
     )
 
-    # Attempt to parse the body as json
     try:
         body = json.loads(body)
     except json.JSONDecodeError:
@@ -116,18 +116,35 @@ async def token(request: Request):
 
 @app.get("")
 @app.get("/")
+@app.get("/index.html", response_class=HTMLResponse)
 @app.get("/{file_path:path}", response_class=FileResponse)
 async def serve_files(file_path: str):
     print(file_path)
     requested_path = Path("public") / file_path
     if requested_path.exists() and requested_path.is_file():
-        return requested_path
-    
+        with open(requested_path, "r", encoding="utf-8") as file:
+            template_content = file.read()
+
+        template = Template(template_content)
+        rendered_content = template.render(base_url=BASE_URL)
+        return HTMLResponse(content=rendered_content, status_code=200)
+
     raise HTTPException(status_code=404, detail=f"{file_path} not found")
 
-@app.get("/index.html")
 async def index():
-    return Path("public/index.html")
+    index_path = Path("public/index.html")
+    if not index_path.exists():
+        raise HTTPException(status_code=404, detail="index.html not found")
+
+    # Read the index.html file
+    with open(index_path, "r", encoding="utf-8") as file:
+        template_content = file.read()
+    
+    # Render the template with the base_url
+    template = Template(template_content)
+    rendered_content = template.render(base_url=BASE_URL)
+
+    return HTMLResponse(content=rendered_content, status_code=200)
 
 @app.get("/", response_class=FileResponse)
 async def serve_files(file_path: str):

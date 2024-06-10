@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<base href="{{base_url}}">
 
 <head>
     <meta charset="UTF-8">
@@ -55,9 +56,10 @@
             <button id="generate-passphrase" class="btn btn-secondary">Generate Secure Passphrase</button>
             <div id="passphrase" class="mt-3"></div>
         </div>
-
-
     </div>
+
+    <!-- <input type="hidden" id="base_url" value="{{base_url}}"> -->
+    <!-- Add jinja2 base_url for static resources-->
     <script src="index.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
