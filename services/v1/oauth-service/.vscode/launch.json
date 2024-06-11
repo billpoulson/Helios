@@ -8,12 +8,12 @@
       "name": "Python Debugger: Current File",
       "type": "debugpy",
       "request": "launch",
-      "program": "./scripts/runner.py",
-      "args": [
-        "dev",
-        "tf-var-loader"
-      ],
-      "console": "integratedTerminal"
+      "program": "./src/index.py",
+      "console": "integratedTerminal",
+      "env": {
+        "BASE_URL":"/api",
+        "API_URL":"/api"
+      }
     }
   ]
 }

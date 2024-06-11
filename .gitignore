@@ -17,7 +17,7 @@ crash.log
 
 # Python cache directories
 **/__pycache__/
-
+**/node_modules/
 # Data directory
 data/
 

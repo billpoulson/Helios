@@ -1,0 +1,37 @@
+
+# Use the official Node.js image based on Alpine Linux
+# https://hub.docker.com/_/node
+FROM node:18-alpine
+
+# Create and change to the app directory
+WORKDIR /usr/src/app
+
+# Copy application dependencies
+COPY package*.json ./
+
+# Install the dependencies
+# Adding additional steps to diagnose potential issues
+RUN npm --version && \
+    node --version && \
+    npm install -g npm && \
+    npm ci || (cat /usr/src/app/npm-debug.log && exit 1)
+
+# Copy the local code to the container
+COPY . .
+
+# Output the contents of the directory to debug potential issues
+RUN ls -al /usr/src/app
+
+# Diagnostic step before running the build
+RUN echo "Starting npm run build..."
+
+# Build the application
+RUN npm run build || (echo "npm run build failed" && cat /usr/src/app/npm-debug.log && exit 1)
+
+# Diagnostic step after running the build
+RUN echo "Build completed."
+
+# Output the contents of the directory after build to debug potential issues
+RUN ls -al /usr/src/app
+# Run the web service on container startup
+CMD [ "node", "dist/index.js" ]

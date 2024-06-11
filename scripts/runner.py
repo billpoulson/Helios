@@ -1,149 +1,19 @@
 import argparse
 import os
-import platform
+import platform as pf
 import subprocess
 
-bash = "/bin/bash"
-scripts_dir = os.path.join(os.path.dirname(__file__), "scripts")
-platform = platform.system().lower()
+def run_script(script_name):
+    platform = pf.system().lower()
+    script_dir = os.path.join(os.path.dirname(__file__), platform)
+    script_ext = ".ps1" if platform == "windows" else ".sh"
+    script_path = os.path.join(script_dir, script_name + script_ext)
 
-
-def check_tool_installation():
     if platform == "windows":
-        subprocess.run(
-            [
-                "powershell",
-                "-Command",
-                os.path.join(
-                    os.path.dirname(__file__), platform, "Check-Tool-Installation.ps1"
-                ),
-            ]
-        )
+        subprocess.run(["powershell", "-Command", script_path])
     else:
-        subprocess.run(
-            [
-                bash,
-                os.path.join(
-                    os.path.dirname(__file__), platform, "check-tool-installation.sh"
-                ),
-            ]
-        )
-
-
-def docker_build():
-    if platform == "windows":
-        subprocess.run(
-            [
-                "powershell",
-                "-Command",
-                os.path.join(os.path.dirname(__file__), platform, "Docker-Build.ps1"),
-            ]
-        )
-    else:
-        subprocess.run(
-            [
-                bash,
-                os.path.join(os.path.dirname(__file__), platform, "docker-build.sh"),
-            ]
-        )
-
-
-def docker_run():
-    if platform == "windows":
-        subprocess.run(
-            [
-                "powershell",
-                "-Command",
-                os.path.join(os.path.dirname(__file__), platform, "Docker-Run.ps1"),
-            ]
-        )
-    else:
-        subprocess.run(
-            [
-                bash,
-                os.path.join(os.path.dirname(__file__), platform, "docker-run.sh"),
-            ]
-        )
-
-
-def dotenv_pull():
-    if platform == "windows":
-        subprocess.run(
-            [
-                "powershell",
-                "-Command",
-                os.path.join(os.path.dirname(__file__), platform, "Dotenv-Pull.ps1"),
-            ]
-        )
-    else:
-        subprocess.run(
-            [
-                bash,
-                os.path.join(os.path.dirname(__file__), platform, "dotenv-pull.sh"),
-            ]
-        )
-
-
-def terraform_apply_env():
-    if platform == "windows":
-        subprocess.run(
-            [
-                "powershell",
-                "-Command",
-                os.path.join(
-                    os.path.dirname(__file__), platform, "Terraform-Apply-Env.ps1"
-                ),
-            ]
-        )
-    else:
-        subprocess.run(
-            [
-                bash,
-                os.path.join(
-                    os.path.dirname(__file__), platform, "terraform-apply-env.sh"
-                ),
-            ]
-        )
-def terraform_destroy_env():
-    if platform == "windows":
-        subprocess.run(
-            [
-                "powershell",
-                "-Command",
-                os.path.join(
-                    os.path.dirname(__file__), platform, "terraform-destroy-env.ps1"
-                ),
-            ]
-        )
-    else:
-        subprocess.run(
-            [
-                bash,
-                os.path.join(
-                    os.path.dirname(__file__), platform, "terraform-destroy-env.sh"
-                ),
-            ]
-        )
-
-
-def tf_var_loader():
-    if platform == "windows":
-        subprocess.run(
-            [
-                "powershell",
-                "-Command",
-                os.path.join(os.path.dirname(__file__), platform, "TF_VAR_Loader.ps1"),
-            ]
-        )
-    else:
-        subprocess.run(
-            [
-                bash,
-                os.path.join(os.path.dirname(__file__), platform, "TF_VAR_Loader.sh"),
-            ]
-        )
-
-
+        subprocess.run(["/bin/bash", script_path])
+        
 def main():
     parser = argparse.ArgumentParser(description="Cross-Platform Script Runner")
     parser.add_argument(
@@ -155,13 +25,13 @@ def main():
     parser.add_argument(
         "command",
         choices=[
-            "check_tool_installation",
-            "docker_build",
-            "docker_run",
-            "dotenv_pull",
-            "terraform_apply_env",
-            "terraform_destroy_env",
-            "tf_var_loader",
+            "check-tool-installation",
+            "docker-build",
+            "docker-run",
+            "dotenv-pull",
+            "terraform-apply-env",
+            "terraform-destroy-env",
+            "tf-var-loader",
         ],
         help="The command to execute",
     )
@@ -169,21 +39,7 @@ def main():
     args = parser.parse_args()
     os.environ["ENV"] = args.env
 
-    if args.command == "check_tool_installation":
-        check_tool_installation()
-    elif args.command == "docker_build":
-        docker_build()
-    elif args.command == "docker_run":
-        docker_run()
-    elif args.command == "dotenv_pull":
-        dotenv_pull()
-    elif args.command == "terraform_apply_env":
-        terraform_apply_env()
-    elif args.command == "terraform_destroy_env":
-        terraform_destroy_env()
-    elif args.command == "tf_var_loader":
-        tf_var_loader()
-
+    run_script(args.command)
 
 if __name__ == "__main__":
     main()
