@@ -1,3 +1,31 @@
+resource "kubernetes_ingress_v1" "smoke-test-function" {
+  metadata {
+    namespace = var.app_namespace
+    name      = "smoke-test-function-http-ingress"
+  }
+
+  spec {
+    ingress_class_name = "ngrok"
+    rule {
+      host = var.domain_name
+      http {
+        path {
+          path      = "/v1/functions/smoke-test"
+          path_type = "Prefix"
+          backend {
+            service {
+              name = kubernetes_service_v1.function_a.metadata[0].name
+              port {
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 # Service
 resource "kubernetes_service_v1" "function_a" {
   metadata {

@@ -69,18 +69,18 @@ resource "kubernetes_deployment_v1" "oauth_manager" {
             name  = "API_URL"
             value = "/api"
           }
-          volume_mount {
-            name       = "example-data"
-            mount_path = "/app/data"
-          }
+          # volume_mount {
+          #   name       = "example-data"
+          #   mount_path = "/app/data"
+          # }
         }
 
-        volume {
-          name = "example-data"
-          persistent_volume_claim {
-            claim_name = var.pv_claim_name
-          }
-        }
+        # volume {
+        #   name = "example-data"
+        #   persistent_volume_claim {
+        #     claim_name = var.pv_claim_name
+        #   }
+        # }
       }
     }
   }

@@ -1,3 +1,46 @@
+resource "kubernetes_ingress_v1" "simple_oauth" {
+  metadata {
+    namespace = var.app_namespace
+    name      = "simple-oauth-http-ingress"
+  }
+  spec {
+    ingress_class_name = "ngrok"
+    rule {
+      host = var.domain_name
+      http {
+        path {
+          path      = "/api"
+          path_type = "Prefix"
+          backend {
+            service {
+              name = kubernetes_service_v1.simple_oauth.metadata[0].name
+              port {
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_service_v1" "simple_oauth" {
+  metadata {
+    namespace = var.app_namespace
+    name      = "simple-oauth"
+  }
+  spec {
+    port {
+      port        = 80
+      target_port = 8000
+    }
+    selector = {
+      app = "simple-oauth"
+    }
+  }
+}
+
 resource "kubernetes_deployment_v1" "simple_oauth" {
   metadata {
     namespace = var.app_namespace
@@ -38,6 +81,10 @@ resource "kubernetes_deployment_v1" "simple_oauth" {
             name  = "BASE_URL"
             value = "/api"
           }
+          env {
+            name  = "API_URL"
+            value = "/api"
+          }
           volume_mount {
             name       = "example-data"
             mount_path = "/app/data"
@@ -55,45 +102,5 @@ resource "kubernetes_deployment_v1" "simple_oauth" {
   }
 }
 
-resource "kubernetes_service_v1" "simple_oauth" {
-  metadata {
-    namespace = var.app_namespace
-    name      = "simple-oauth"
-  }
-  spec {
-    port {
-      port        = 80
-      target_port = 8000
-    }
-    selector = {
-      app = "simple-oauth"
-    }
-  }
-}
-resource "kubernetes_ingress_v1" "simple_oauth" {
-  metadata {
-    namespace = var.app_namespace
-    name      = "simple-oauth-http-ingress"
-  }
-  spec {
-    ingress_class_name = "ngrok"
-    rule {
-      host = var.domain_name
-      http {
-        path {
-          path      = "/api"
-          path_type = "Prefix"
-          backend {
-            service {
-              name = kubernetes_service_v1.simple_oauth.metadata[0].name
-              port {
-                number = 80
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+
 
