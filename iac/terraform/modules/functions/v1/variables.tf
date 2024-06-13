@@ -13,18 +13,6 @@ variable "domain_name" {
   type        = string
 }
 
-variable "kubernetes_config_path" {
-  description = "Path to the Kubernetes config file"
-  type        = string
-  default     = "~/.kube/config"
-}
-
-variable "kubernetes_context" {
-  description = "Kubernetes config context to use"
-  type        = string
-  default     = "docker-desktop"
-}
-
 variable "docker_image_version" {
   description = "Version of the Docker image"
   type        = string
@@ -39,5 +27,9 @@ variable "maintenance_mode" {
 
 variable "function_a_image_name" {
   description = "image name"
+  type        = string
+}
+variable "deno_image_name" {
+  description = "deno image name"
   type        = string
 }

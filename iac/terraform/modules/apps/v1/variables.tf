@@ -8,16 +8,14 @@ variable "app_namespace" {
   type        = string
 }
 
-variable "kubernetes_config_path" {
-  description = "Path to the Kubernetes config file"
+variable "domain_name" {
+  description = "ngrok domain name"
   type        = string
-  default     = "~/.kube/config"
 }
 
-variable "kubernetes_context" {
-  description = "Kubernetes config context to use"
-  type        = string
-  default     = "docker-desktop"
+variable "public_ingress_port" {
+  description = "host has traffic to this port"
+  type        = number
 }
 
 variable "oauth_manager_image_name" {
@@ -31,11 +29,6 @@ variable "docker_image_version" {
   default     = "latest"
 }
 
-variable "domain_name" {
-  description = "ngrok domain name"
-  type        = string
-}
-
 variable "maintenance_mode" {
   description = "enable maintenance mode"
   type        = bool
@@ -46,6 +39,8 @@ variable "pv_claim_name" {
   description = "persistent volume claim to use"
   type        = string
 }
+
+
 variable "api_service_name" {
   description = "name of the api service"
   type        = string

@@ -1,29 +1,29 @@
 
-# resource "kubernetes_ingress_v1" "maint-site" {
-#   metadata {
-#     namespace = var.app_namespace
-#     name      = "maint-site-http-ingress"
-#   }
-#   spec {
-#     ingress_class_name = "ngrok"
-#     rule {
-#       host = var.domain_name
-#       http {
-#         path {
-#           path = "/maint"
-#           backend {
-#             service {
-#               name = "maint-site"
-#               port {
-#                 number = 80
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#   }
-# }
+resource "kubernetes_ingress_v1" "maint-site" {
+  metadata {
+    namespace = var.app_namespace
+    name      = "maint-site-http-ingress"
+  }
+  spec {
+    ingress_class_name = "ngrok"
+    rule {
+      host = var.domain_name
+      http {
+        path {
+          path = "/"
+          backend {
+            service {
+              name = "maint-site"
+              port {
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 
 resource "kubernetes_service_v1" "maint-site" {

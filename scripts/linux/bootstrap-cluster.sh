@@ -1,0 +1,1 @@
+helm upgrade --install cert-manager --repo https://charts.jetstack.io cert-manager --namespace cert-manager --create-namespace --version v1.12.0 --set installCRDs=true

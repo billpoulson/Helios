@@ -1,0 +1,30 @@
+# Use the official Deno image
+# https://hub.docker.com/r/denoland/deno
+FROM denoland/deno:alpine-1.42.4
+
+# Set the working directory
+WORKDIR /app
+
+# Copy local code to the container
+COPY . .
+# Cache dependencies based on lock file
+# You might need to create a deno.lock file by running `deno test --lock=deno.lock --lock-write`
+COPY deno.lock .
+# RUN deno cache --lock deno.lock
+RUN deno cache --lock=deno.lock ./src/*.ts
+# Output the contents of the directory to debug potential issues
+RUN deno test --lock=deno.lock --lock-write --allow-env --allow-sys --allow-net
+RUN ls -al /app
+
+# Diagnostic step before running the build
+RUN echo "Starting deno bundle..."
+
+# Bundle the application
+RUN deno bundle src/index.ts dist/index.js || (echo "Deno bundle failed" && exit 1)
+# Diagnostic step after running the bundle
+RUN echo "Bundle completed."
+
+# Output the contents of the directory after build to debug potential issues
+RUN ls -al /app
+# Run the Deno web service on container startup
+CMD ["deno", "run", "--allow-env", "--allow-sys", "--allow-net", "dist/index.js"]

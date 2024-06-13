@@ -8,5 +8,4 @@ resource "docker_image" "v1-functions-smoke-test" {
   triggers = {
     context_hash = local.timestamp
   }
-
 }

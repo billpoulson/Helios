@@ -27,3 +27,11 @@ output "v1_functions_smoke_test_image_name_id" {
 output "v1_functions_smoke_test_image_name" {
   value = docker_image.v1-functions-smoke-test.name
 }
+
+# Output the full image ID and tag for verification
+output "v1_functions_smoke_test_deno_image_name_id" {
+  value = docker_image.v1-functions-smoke-test-deno.image_id
+}
+output "v1_functions_smoke_test_deno_image_name" {
+  value = docker_image.v1-functions-smoke-test-deno.name
+}

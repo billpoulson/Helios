@@ -14,6 +14,21 @@
         "tf-var-loader"
       ],
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Deno Test",
+      "type": "pwa-node",
+      "request": "launch",
+      "program": "${workspaceFolder}",
+      "command": "deno",
+      "args": [
+        "test",
+        "--inspect-wait",
+        "--lock=deno.lock",
+        "--lock-write",
+        "--allow-env"
+      ],
+      "console": "integratedTerminal"
     }
   ]
 }

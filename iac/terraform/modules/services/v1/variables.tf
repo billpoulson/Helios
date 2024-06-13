@@ -14,18 +14,6 @@ variable "maintenance_mode" {
   default     = false
 }
 
-variable "kubernetes_config_path" {
-  description = "Path to the Kubernetes config file"
-  type        = string
-  default     = "~/.kube/config"
-}
-
-variable "kubernetes_context" {
-  description = "Kubernetes config context to use"
-  type        = string
-  default     = "docker-desktop"
-}
-
 variable "maintenance_backend_service_name" {
   description = "alternate backend to use when in maintenance "
   type        = string

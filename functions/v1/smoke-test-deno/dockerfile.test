@@ -1,0 +1,11 @@
+FROM denoland/deno:alpine-1.42.4
+
+# Set working directory
+WORKDIR /app
+
+# Copy project files
+COPY . .
+
+# Run the tests
+CMD ["deno", "test", "--allow-env", "--allow-net"]
+deno test --lock=deno.lock --lock-write --allow-env --allow-sys --allow-net

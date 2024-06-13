@@ -1,6 +1,4 @@
-
 terraform {
-
   required_providers {
     randombyte = {
       source  = "Socolin/randombyte"
@@ -17,15 +15,4 @@ terraform {
       version = "~> 3.0"
     }
   }
-}
-provider "helm" {
-  // include appropriate configuration details
-  kubernetes {
-    config_path = var.kubernetes_config_path
-    // other necessary fields
-  }
-}
-provider "kubernetes" {
-  config_path    = var.kubernetes_config_path
-  config_context = var.kubernetes_context
 }

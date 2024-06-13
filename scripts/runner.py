@@ -10,36 +10,46 @@ def run_script(script_name):
     script_path = os.path.join(script_dir, script_name + script_ext)
 
     if platform == "windows":
-        subprocess.run(["powershell", "-Command", script_path])
+        subprocess.run(["powershell", "-Command", script_path], check=True)
     else:
-        subprocess.run(["/bin/bash", script_path])
+        subprocess.run(["/bin/bash", script_path], check=True)
         
 def main():
     parser = argparse.ArgumentParser(description="Cross-Platform Script Runner")
     parser.add_argument(
-        "env",
+        "-e", "--env",
         choices=["dev", "stage", "prod"],
         default="dev",
         help="The deployment environment (default: dev)",
     )
     parser.add_argument(
-        "command",
+        "-c","--commands",
+        nargs='+',  # This allows for one or more command inputs
         choices=[
             "check-tool-installation",
             "docker-build",
             "docker-run",
             "dotenv-pull",
+            "terraform-burn",
+            "bootstrap-cluster",
+            "terraform-init-env",
+            "terraform-plan-env",
             "terraform-apply-env",
             "terraform-destroy-env",
             "tf-var-loader",
         ],
-        help="The command to execute",
+        required=True,  # Makes sure that at least one command is provided
+        help="The command(s) to execute",
     )
-
+  
     args = parser.parse_args()
     os.environ["ENV"] = args.env
-
-    run_script(args.command)
+    for command in args.commands:
+        try:
+            run_script(command)
+        except subprocess.CalledProcessError as e:
+            print(f"Error running script {command}: {e}")
+            break
 
 if __name__ == "__main__":
     main()

@@ -18,6 +18,7 @@ resource "kubernetes_persistent_volume" "data_volume" {
     }
   }
 }
+
 # Persistent Volume Claim
 resource "kubernetes_persistent_volume_claim" "data_volumec" {
   metadata {
@@ -34,4 +35,8 @@ resource "kubernetes_persistent_volume_claim" "data_volumec" {
     }
     storage_class_name = "manual"
   }
+}
+
+output "pv_claim_name" {
+  value = kubernetes_persistent_volume_claim.data_volumec.metadata[0].name
 }

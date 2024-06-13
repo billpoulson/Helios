@@ -13,14 +13,6 @@ terraform {
   }
 }
 
-provider "helm" {
-  // include appropriate configuration details
-  kubernetes {
-    config_path = var.kubernetes_config_path
-    // other necessary fields
-  }
-}
-
 resource "helm_release" "ngrok-ingress-controller" {
   namespace  = var.app_namespace
   name       = "ngrok-ingress-controller"

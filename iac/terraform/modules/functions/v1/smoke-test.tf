@@ -10,7 +10,7 @@ resource "kubernetes_ingress_v1" "smoke-test-function" {
       host = var.domain_name
       http {
         path {
-          path      = "/v1/functions/smoke-test"
+          path      = "/v1/functions/smoke-test-express"
           path_type = "Prefix"
           backend {
             service {
