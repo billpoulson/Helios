@@ -2,9 +2,21 @@ param (
   [string]$environment = ""
 )
 
-[System.Environment]::SetEnvironmentVariable("TF_LOG", "TRACE")
+# Set environment variables
+[System.Environment]::SetEnvironmentVariable("TF_LOG", "trace")
 
 .\scripts\windows\tf-var-loader.ps1 -environment $environment
+# Write-Host "Resolved scripts path: $scriptsPath"
+[System.Environment]::SetEnvironmentVariable("TF_VAR_helios_runner", $(Resolve-Path -Path "./scripts/runner.py"))
+[System.Environment]::SetEnvironmentVariable("TF_VAR_helios_workspace", $(Resolve-Path -Path "./"))
+
+# Load TF variables
+
+# Write all environment variables to the console
+$envVars = [System.Environment]::GetEnvironmentVariables()
+foreach ($envVar in $envVars.Keys) {
+  Write-Output "$envVar = $($envVars[$envVar])"
+}
 
 terraform -chdir=iac\terraform init -upgrade
 

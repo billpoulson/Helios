@@ -1,0 +1,14 @@
+{
+  "env_map": {
+    "local": "development",
+    "dev": "development",
+    "prod": "production",
+    "stg": "staging",
+    "cicd": "ci",
+    "ci": "ci",
+    "cd": "ci"
+  },
+  "exclude_patterns": [
+    "*/node_modules/*"
+  ]
+}

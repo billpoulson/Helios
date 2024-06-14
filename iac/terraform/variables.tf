@@ -3,6 +3,7 @@ variable "env" {
   description = "The environment name"
 }
 
+
 variable "kubernetes_config_path" {
   description = "Path to the Kubernetes config file"
   type        = string
@@ -44,5 +45,15 @@ variable "enable_maintenance" {
 
 variable "app_namespace" {
   description = "app_namespace"
+  type        = string
+}
+
+variable "helios_workspace" {
+  description = "helios workspace path"
+  type        = string
+}
+
+variable "helios_runner" {
+  description = "helios runner path"
   type        = string
 }

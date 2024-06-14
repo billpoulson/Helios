@@ -109,8 +109,10 @@ module "storage" {
 }
 
 module "secrets" {
-  source        = "./modules/secrets"
-  app_namespace = kubernetes_namespace_v1.sample_app.metadata[0].name
+  source           = "./modules/secrets"
+  app_namespace    = kubernetes_namespace_v1.sample_app.metadata[0].name
+  helios_runner    = var.helios_runner
+  helios_workspace = var.helios_workspace
   providers = {
     randombyte = randombyte
   }

@@ -9,7 +9,15 @@ py .\scripts\runner.py dev tf-var-loader
 ```
 
 ```sh {"id":"01J079YKSARJ7B7HKFDR4ZNSH3"}
-python ./scripts/runner.py --env dev --commands check-tool-installation terraform-burn bootstrap-cluster terraform-init-env
+python ./scripts/runner.py --env dev --commands check-tool-installation terraform-burn bootstrap-cluster terraform-apply-env
+```
+
+```sh {"id":"01J0A9RGGX9HETF3VT5KC20RW5"}
+python ./scripts/runner.py --env dev --commands check-tool-installation terraform-burn bootstrap-cluster terraform-apply-env
+```
+
+```sh {"id":"01J0AA07AGQSF19PG7H74X1K9Q"}
+python ./scripts/runner.py --env dev --commands bootstrap-cluster terraform-apply-env
 ```
 
 ### Install cluster helm resources
@@ -70,13 +78,10 @@ kubectl delete certificate exhelion-net-tls -n my-sample-app
 ```
 
 #### References
+
 - SSL/TLS
-  - https://github.com/kubernetes/ingress-nginx
-  - https://artifacthub.io/packages/helm/cert-manager/cert-manager
-  - ACME
-    - https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment
-    - https://datatracker.ietf.org/doc/html/rfc8555
-
-```sh {"id":"01J06XNG887P0BC2ZQVAK66N2W"}
-
-```
+   - https://github.com/kubernetes/ingress-nginx
+   - https://artifacthub.io/packages/helm/cert-manager/cert-manager
+   - ACME
+      - https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment
+      - https://datatracker.ietf.org/doc/html/rfc8555

@@ -23,5 +23,8 @@ data/
 
 .env*
 .flaskenv*
+.venv*
 !.env.project
 !.env.vault
+
+dotenv.keys.json
