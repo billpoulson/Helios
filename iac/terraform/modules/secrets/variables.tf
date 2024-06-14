@@ -1,14 +1,10 @@
-variable "app_namespace" {
-  description = "app_namespace"
-  type        = string
-}
-variable "helios_workspace" {
-  description = "helios workspace path"
+variable "env" {
+  description = "environment"
   type        = string
 }
 
-variable "helios_runner" {
-  description = "helios runner path"
+variable "app_namespace" {
+  description = "app_namespace"
   type        = string
 }
 

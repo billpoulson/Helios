@@ -41,7 +41,7 @@ variable "pv_claim_name" {
 }
 
 
-variable "api_service_name" {
-  description = "name of the api service"
-  type        = string
-}
+# variable "api_service_name" {
+#   description = "name of the api service"
+#   type        = string
+# }

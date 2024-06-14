@@ -4,6 +4,10 @@ import json
 import fnmatch
 import configparser
 import sys
+
+env = os.getenv('env', 'dev')
+
+
 def run_command(command, cwd=None):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, cwd=cwd)
     stdout, stderr = process.communicate()
@@ -13,18 +17,6 @@ def run_command(command, cwd=None):
     if process.returncode != 0:
         raise Exception(f"Command failed with error: {stderr_decoded}")
     return stdout_decoded
-def parse_output(output):
-    lines = output.split('\n')
-    keys = {}
-
-    for line in lines:
-        if line.strip() != '' and 'dotenv://' in line:
-            parts = line.strip().split()
-            if len(parts) == 2:
-                environment, key = parts
-                keys[environment] = key
-
-    return keys
 
 def find_vault_directories(root_dir, exclude_patterns):
     vault_dirs = []
@@ -58,13 +50,12 @@ def main():
     root_dir = '.'
     
     # Check if the file exists
-    if os.path.exists('./dotenv.keys.json'):
-        print(json.dumps({}))
-        sys.exit()
+    # if os.path.exists('./dotenv.keys.json'):
+    #     print(json.dumps({}))
+    #     sys.exit()
         
-    # env = os.getenv('env', 'dev')
     # env_command_str = transform_env_value(env, env_map)
-    command = f'npx dotenv-vault@latest keys'
+    command = f'npx dotenv-vault@latest keys development'
     
     vault_dirs = find_vault_directories(root_dir, exclude_patterns)
     all_keys = {}
@@ -77,21 +68,20 @@ def main():
             print(f"No project name found in {helios_path}, skipping")
             continue
         try:
-            output = run_command(command, cwd=directory)
-            parsed_keys = parse_output(output)
+            parsed_key = run_command(command, cwd=directory)
             if project_name not in all_keys:
-                all_keys[project_name] = {}
-            all_keys[project_name].update(parsed_keys)
+                all_keys[project_name] = parsed_key
+
         except Exception as e:
             print(f"Failed to run command in {directory}: {e}")
 
     formatted_json = json.dumps(all_keys, indent=2, ensure_ascii=False)
     
     # Save formatted_json to dotenv.keys.json
-    with open('./dotenv.keys.json', 'w') as json_file:
+    with open(f'./dotenv.{env}.keys.json', 'w') as json_file:
         json_file.write(formatted_json)
         
         
-    print(json.dumps({}))
+    print(formatted_json)
 if __name__ == "__main__":
     main()

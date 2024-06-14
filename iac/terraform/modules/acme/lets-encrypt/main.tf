@@ -3,10 +3,10 @@ terraform {
     kubernetes = {
       source = "hashicorp/kubernetes"
     }
-    acme = {
-      source  = "vancluever/acme"
-      version = "~> 2.0"
-    }
+    # acme = {
+    #   source  = "vancluever/acme"
+    #   version = "~> 2.0"
+    # }
   }
 }
 
@@ -26,14 +26,10 @@ resource "kubernetes_manifest" "example" {
         "kind" = "ClusterIssuer"
       }
       "commonName" = "exhelion.net"
-      "dnsNames"   = ["exhelion.net", "www.exhelion.net", "api.exhelion.net"]
+      "dnsNames"   = ["www.exhelion.net"]
     }
   }
 }
-
-# resource "kubernetes_manifest" "exhelion_net_certificate" {
-#   manifest = yamldecode(file("${path.module}/exhelion-net-certificate.yml"))
-# }
 
 resource "kubernetes_manifest" "letsencrypt_clusterissuer" {
   manifest = yamldecode(file("${path.module}/letsencrypt-clusterissuer.yml"))

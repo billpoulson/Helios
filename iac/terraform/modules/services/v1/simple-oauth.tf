@@ -74,16 +74,13 @@ resource "kubernetes_deployment_v1" "simple_oauth" {
             container_port = 8000
           }
           env {
-            name  = "PORT"
-            value = "8000"
-          }
-          env {
-            name  = "BASE_URL"
-            value = "/api"
-          }
-          env {
-            name  = "API_URL"
-            value = "/api"
+            name = "DOTENV_KEY"
+            value_from {
+              secret_key_ref {
+                name = "dotenv-keys"
+                key  = "oauth-service"
+              }
+            }
           }
           volume_mount {
             name       = "example-data"

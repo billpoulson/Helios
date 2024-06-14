@@ -5,13 +5,6 @@ import platform as pf
 import subprocess
 import sys
 
-# Set the environment variable "TF_LOG" to "TRACE"
-# os.environ["TF_LOG"] = "TRACE"
-
-# Resolve the path to "./scripts" and set the environment variable "TF_helios_runner"
-# os.environ["TF_VAR_helios_runner"] = os.path.abspath("./scripts")
-# os.environ["TF_VAR_helios_workspace"] = os.path.abspath("./")
-
 def run_script(script_name):
     platform = pf.system().lower()
 
@@ -61,6 +54,7 @@ def main():
             "util.dotenv-export",
             "util.dotenv-keys-tf-var-export",
             "util.env-tf-var-export",
+            "ssl-smoke-test"
         ],
         required=True,  # Makes sure that at least one command is provided
         help="The command(s) to execute",

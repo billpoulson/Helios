@@ -20,17 +20,10 @@ python ./scripts/runner.py --env dev --commands check-tool-installation terrafor
 python ./scripts/runner.py --env dev --commands bootstrap-cluster terraform-apply-env
 ```
 
-### Install cluster helm resources
-
-```sh {"id":"01J06CXM4TDP1ZEN3Z7W35BKRA"}
-helm upgrade --install cert-manager --repo https://charts.jetstack.io cert-manager --namespace cert-manager --create-namespace --version v1.12.0 --set installCRDs=true
-# helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace
-```
-
 ### Namespace Event Log
 
 ```sh {"id":"01J05ESR8R84GVER27PPDPM9NK"}
-kubectl get events -n my-sample-app
+kubectl get events -n my-sample-app-development
 ```
 
 ### View Ingress Details
@@ -56,28 +49,27 @@ kubectl get svc -n ingress-nginx
 ```
 
 ```sh {"id":"01J06SKP9HK0DCG9YNME9HZJAP"}
-kubectl get ingress cm-acme-http-solver-6mrxt -n my-sample-app -o yaml
-
+kubectl get ingress cm-acme-http-solver-6mrxt -n my-sample-app-development -o yaml
 ```
 
 ```sh {"id":"01J06SQEFYCJ7NZPEWCZ9XZBMT"}
-kubectl get service cm-acme-http-solver -n my-sample-app -o yaml
-
+kubectl get service -n cert-manager -o yaml
 ```
 
 ```sh {"id":"01J06SRZWBNBPZ9XQJP12XH38V"}
 kubectl get networkpolicy -A
-
 ```
 
 ```sh {"id":"01J06W99F02NNQSGY9TG91ZAWZ"}
-kubectl delete order -n my-sample-app --all
-kubectl delete certificaterequest -n my-sample-app --all
-kubectl delete certificate exhelion-net-tls -n my-sample-app
-
+kubectl delete order -n my-sample-app-development --all
+kubectl delete certificaterequest -n my-sample-app-development --all
+kubectl delete certificate exhelion-net-tls -n my-sample-app-development
 ```
 
 #### References
+
+- let's-encrypt
+   - https://letsencrypt.org/docs/duplicate-certificate-limit/
 
 - SSL/TLS
    - https://github.com/kubernetes/ingress-nginx
@@ -85,3 +77,9 @@ kubectl delete certificate exhelion-net-tls -n my-sample-app
    - ACME
       - https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment
       - https://datatracker.ietf.org/doc/html/rfc8555
+
+### Reset Local Environment
+
+```sh {"id":"01J0C67SDV9R5P7X81CAZ5M6ME"}
+python ./scripts/runner.py --env dev --commands check-tool-installation terraform-burn bootstrap-cluster terraform-apply-env
+```

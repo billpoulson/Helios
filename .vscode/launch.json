@@ -5,14 +5,25 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python Debugger: Current File",
+      "name": "Debug: Runner",
       "type": "debugpy",
       "request": "launch",
       "program": "./scripts/runner.py",
       "args": [
+        "--env",
         "dev",
-        "tf-var-loader"
+        "--commands",
+        "util.dotenv-export"
       ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python Debugger: scripts/util/dotenv-export ",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "./scripts/util/dotenv-export.py",
+      "args": [],
+      "env": { "env": "development" },
       "console": "integratedTerminal"
     },
     {

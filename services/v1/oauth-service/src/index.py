@@ -14,19 +14,23 @@ from models import ClientCreate, ClientView
 from oauthlib.oauth2 import Server
 from request_validator import RequestValidator
 from secret_storage import SecretStorage
+from dotenv import load_dotenv
+
+# Allow the deployed container configuration to provide values that will not be overwritten.
+load_dotenv(override=False)
 
 BASE_URL = os.getenv("BASE_URL", "")
 API_URL = os.getenv("API_URL", "")
+
 
 # OAuth2 Request Validator.
 oauth2 = Server(RequestValidator())
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
+logger.info(f'BaseUrl: {BASE_URL}')
 print(f"BASE URL: {BASE_URL}")
 
 app = FastAPI(redirect_slashes=False)
-
 
 # Printing the list of all public files 
 public_directory = Path("public")
