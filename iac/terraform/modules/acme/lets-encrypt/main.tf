@@ -3,10 +3,10 @@ terraform {
     kubernetes = {
       source = "hashicorp/kubernetes"
     }
-    # acme = {
-    #   source  = "vancluever/acme"
-    #   version = "~> 2.0"
-    # }
+    acme = {
+      source  = "vancluever/acme"
+      version = "~> 2.0"
+    }
   }
 }
 
@@ -22,7 +22,6 @@ resource "kubernetes_manifest" "example" {
       "secretName" = "exhelion-net-tls"
       "issuerRef" = {
         "name" = "letsencrypt-prod"
-        # "name" = "letsencrypt-stg"
         "kind" = "ClusterIssuer"
       }
       "commonName" = "exhelion.net"
@@ -31,6 +30,34 @@ resource "kubernetes_manifest" "example" {
   }
 }
 
+
 resource "kubernetes_manifest" "letsencrypt_clusterissuer" {
-  manifest = yamldecode(file("${path.module}/letsencrypt-clusterissuer.yml"))
+  manifest = {
+    "apiVersion" = "cert-manager.io/v1"
+    "kind"       = "ClusterIssuer"
+    "metadata" = {
+      "name" = "letsencrypt-prod"
+      # "name" = "letsencrypt-stg"
+    }
+    "spec" = {
+      "acme" = {
+        # "server" = "https://acme-staging-v02.api.letsencrypt.org/directory"
+        "server" = "https://acme-v02.api.letsencrypt.org/directory"
+        "email"  = "poulson.bill@gmail.com" # replace with your email
+        "privateKeySecretRef" = {
+          "name" = "letsencrypt-prod"
+          # "name" = "letsencrypt-stg"
+        }
+        "solvers" = [
+          {
+            "http01" = {
+              "ingress" = {
+                "class" = "nginx" # assuming you're using NGINX Ingress
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
 }

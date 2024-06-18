@@ -1,4 +1,0 @@
-{
-  "iac": "dotenv://:key_f8d81db8c7b6e2a081c981820cb1abde2d0c15aff2a1ee4d907d55cc3b3c7aee@dotenv.org/vault/.env.vault?environment=development",
-  "oauth-service": "dotenv://:key_c7aab98a1d522dd04fa954a7285bf71df2233aa994493d542acf8607fa65a9bc@dotenv.org/vault/.env.vault?environment=development"
-}
