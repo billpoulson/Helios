@@ -1,6 +1,4 @@
-
 terraform {
-
   required_providers {
     randombyte = {
       source  = "Socolin/randombyte"
@@ -8,9 +6,6 @@ terraform {
     }
     kubernetes = {
       source = "hashicorp/kubernetes"
-    }
-    helm = {
-      source = "hashicorp/helm"
     }
     docker = {
       source  = "kreuzwerker/docker"
@@ -25,25 +20,4 @@ terraform {
       version = "3.1.0" # Specify the version you want to use
     }
   }
-}
-provider "null" {}
-provider "kubernetes" {
-  config_path    = var.kubernetes_config_path
-  config_context = var.kubernetes_context
-}
-provider "helm" {
-  kubernetes {
-    config_path    = var.kubernetes_config_path
-    config_context = var.kubernetes_context
-  }
-}
-
-provider "acme" {
-  alias      = "prod"
-  server_url = "https://acme-v02.api.letsencrypt.org/directory"
-}
-
-provider "acme" {
-  alias      = "stage"
-  server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
 }

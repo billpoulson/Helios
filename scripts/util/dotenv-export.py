@@ -48,11 +48,6 @@ def main():
     exclude_patterns = config.get('exclude_patterns', [])
 
     root_dir = '.'
-    
-    # Check if the file exists
-    # if os.path.exists('./dotenv.keys.json'):
-    #     print(json.dumps({}))
-    #     sys.exit()
         
     # env_command_str = transform_env_value(env, env_map)
     command = f'npx dotenv-vault@latest keys development'
@@ -76,10 +71,6 @@ def main():
             print(f"Failed to run command in {directory}: {e}")
 
     formatted_json = json.dumps(all_keys, indent=2, ensure_ascii=False)
-    
-    # Save formatted_json to dotenv.keys.json
-    with open(f'./dotenv.{env}.keys.json', 'w') as json_file:
-        json_file.write(formatted_json)
         
         
     print(formatted_json)

@@ -17,7 +17,6 @@ variable "kubernetes_config_path" {
 variable "kubernetes_context" {
   description = "Kubernetes config context to use"
   type        = string
-  default     = "docker-desktop"
 }
 
 variable "instance_name" {

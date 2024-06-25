@@ -17,6 +17,8 @@ echo "Checking commands..."
 check_command "docker"
 check_command "kubectl"
 check_command "terraform"
+check_command "helm"
+check_command "npx"
 
 echo "All required commands are available."
 echo "Script execution completed."

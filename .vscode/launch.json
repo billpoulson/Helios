@@ -18,6 +18,21 @@
       "console": "integratedTerminal"
     },
     {
+      "name": "Debug: Runner/util.bootstrap-cluster",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "./scripts/runner.py",
+      "args": [
+        "--env",
+        "dev",
+        "--commands",
+        "util.bootstrap-cluster",
+        "--kube-context-name",
+        "docker-desktop-dev"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
       "name": "Python Debugger: scripts/util/dotenv-export ",
       "type": "debugpy",
       "request": "launch",

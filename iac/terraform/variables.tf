@@ -4,17 +4,18 @@ variable "env" {
 }
 
 
-variable "kubernetes_config_path" {
+variable "kube_config_path" {
   description = "Path to the Kubernetes config file"
   type        = string
   default     = "~/.kube/config"
 }
 
-variable "kubernetes_context" {
+variable "kube_context_name" {
   description = "Kubernetes config context to use"
   type        = string
-  default     = "docker-desktop"
+  # default     = "docker-desktop-dev"
 }
+
 
 variable "docker_image_version" {
   description = "Version of the Docker image"
@@ -56,4 +57,13 @@ variable "helios_workspace" {
 variable "helios_runner" {
   description = "helios runner path"
   type        = string
+}
+
+
+variable "letsencrypt_acmed_server_url_prod" {
+  default = "https://acme-v02.api.letsencrypt.org/directory"
+}
+
+variable "letsencrypt_acme_server_url_stage" {
+  default = "https://acme-staging-v02.api.letsencrypt.org/directory"
 }

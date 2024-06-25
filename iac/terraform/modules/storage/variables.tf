@@ -1,4 +1,4 @@
-variable "app_namespace" {
-  description = "app_namespace"
+variable "namespace" {
+  description = "namespace"
   type        = string
 }

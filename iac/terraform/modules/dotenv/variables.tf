@@ -3,8 +3,13 @@ variable "env" {
   type        = string
 }
 
-variable "app_namespace" {
-  description = "app_namespace"
+variable "namespace" {
+  description = "namespace"
+  type        = string
+}
+
+variable "secret_name" {
+  description = "secret name to store keys"
   type        = string
 }
 
@@ -16,5 +21,13 @@ variable "helios_workspace" {
 variable "helios_runner" {
   description = "helios runner path"
   type        = string
+}
 
+variable "kube_context" {
+  description = "helios runner path"
+  type        = string
+  # default = {
+  #   "dev"  = "docker-desktop-dev"
+  #   "prod" = "docker-desktop-prod"
+  # }
 }

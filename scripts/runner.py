@@ -7,7 +7,6 @@ import sys
 
 def run_script(script_name):
     platform = pf.system().lower()
-
     if script_name.startswith("util."):
         script_dir = os.path.join(os.path.dirname(__file__), "util")
         script_name = script_name.split("util.")[1]  # Remove 'util.' prefix for the actual script name
@@ -45,7 +44,6 @@ def main():
             "docker-run",
             "dotenv-pull",
             "terraform-burn",
-            "bootstrap-cluster",
             "terraform-init-env",
             "terraform-plan-env",
             "terraform-apply-env",
@@ -54,18 +52,39 @@ def main():
             "util.dotenv-export",
             "util.dotenv-keys-tf-var-export",
             "util.env-tf-var-export",
+            "util.bootstrap-cluster",
             "ssl-smoke-test"
         ],
         required=True,  # Makes sure that at least one command is provided
         help="The command(s) to execute",
     )
+    parser.add_argument(
+        "-k", "--kube-context-name",
+        default="kind-local-dev",
+        help="The deployment cluster (default: docker-desktop)",
+        required=False
+    )
 
     args = parser.parse_args()
-    os.environ["ENV"] = args.env
+    
+    os.environ["helios_runner"] = os.path.abspath("./scripts/runner.py")
+    os.environ["helios_workspace"] = os.path.abspath("./")
+    os.environ["HELIOS_KUBE_CONTEXT"] = "docker-desktop"
+    os.environ["kube_context_name"] = os.path.abspath(args.kube_context_name)
+    os.environ["TF_VAR_helios_runner"] = os.path.abspath("./scripts/runner.py")
+    os.environ["TF_VAR_helios_workspace"] = os.path.abspath("./")
+    os.environ["TF_VAR_kube_context_name"] = os.path.abspath(args.kube_context_name)
+    
     for command in args.commands:
         try:
             run_script(command)
         except subprocess.CalledProcessError:
             break
+
+
+
 if __name__ == "__main__":
     main()
+    
+    
+    

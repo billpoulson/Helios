@@ -5,10 +5,10 @@ param (
 $defaultEnvs = @("", "dev", "local", "development")
 
 $filePath = if ($defaultEnvs -contains $environment) {
-  ".env"
+  "/iac/.env"
 }
 else {
-  ".env.$environment"
+  "./iac/.env.$environment"
 }
 
 $lines = Get-Content $filePath
@@ -16,17 +16,6 @@ $lines = Get-Content $filePath
 $totalLines = $lines.Count
 $currentLine = 0
 
-function Show-ProgressBar {
-  param (
-    [int]$Percentage
-  )
-  $totalBlocks = 30
-  $filledBlocks = [math]::Round($Percentage / 100 * $totalBlocks)
-  $emptyBlocks = $totalBlocks - $filledBlocks
-  $progressBar = ("#" * $filledBlocks) + ("-" * $emptyBlocks)
-  Write-Progress -Activity "Progress" -Status "$Percentage% complete" -PercentComplete $Percentage
-  Write-Host "[$progressBar] $Percentage% complete"
-}
 $lines | ForEach-Object {
   if ($_ -match "^(?<key>[^=]+)=(?<value>.*)$" -and $_ -notmatch "^#") {
     $value = $matches['value']
@@ -47,3 +36,8 @@ $lines | ForEach-Object {
     Write-Output "  skipped line: $_"
   }
 }
+
+os.environ["ENV"] = args.env
+os.environ["HELIOS_KUBE_CONTEXT"] = args.kube_context_name
+os.environ["TF_VAR_kube_context_name"] = args.kube_context_name
+os.environ["TF_VAR_app_namespace"] = "ass"

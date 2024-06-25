@@ -2,21 +2,21 @@ variable "env" {
   type        = string
   description = "The environment name"
 }
-variable "env_namespace" {
+
+variable "namespace" {
   type        = string
   description = "environment namespace"
 }
 
-variable "kubernetes_config_path" {
+variable "kube_config_path" {
   description = "Path to the Kubernetes config file"
   type        = string
   default     = "~/.kube/config"
 }
 
-variable "kubernetes_context" {
+variable "kube_context_name" {
   description = "Kubernetes config context to use"
   type        = string
-  default     = "docker-desktop"
 }
 
 variable "docker_image_version" {
@@ -35,7 +35,7 @@ variable "ngrok_authtoken" {
   type        = string
 }
 
-variable "domain_name" {
+variable "domain_common_name" {
   description = "ngrok domain name"
   type        = string
 }
@@ -55,3 +55,33 @@ variable "helios_runner" {
   description = "helios runner path"
   type        = string
 }
+
+variable "primary_email_contact" {
+  description = "primary email contact "
+  type        = string
+}
+
+# variable "cluster_issuer" {
+#   description = "cluster certificate issuer"
+#   type        = string
+# }
+
+variable "dot_env_secret" {
+  description = "dot_env_project_key"
+  type        = string
+  default     = "dotenv-keys"
+}
+
+variable "acme_server_url" {
+  description = "acme server url"
+  type        = string
+}
+
+# variable "library" {
+#   description = "Library value"
+#   type = object({
+#     api       = map(string)
+#     functions = map(string)
+#     apps      = map(string)
+#   })
+# }

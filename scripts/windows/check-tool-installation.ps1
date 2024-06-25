@@ -15,5 +15,7 @@ function Check-Command {
 Check-Command "docker"
 Check-Command "kubectl"
 Check-Command "terraform"
+Check-Command "helm"
+Check-Command "npx"
 
 Write-Host "All required commands are available."

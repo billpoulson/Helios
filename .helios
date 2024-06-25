@@ -1,5 +1,0 @@
-[dotenv]
-project=iac
-
-[helios]
-environments=development;production;staging

@@ -1,6 +1,5 @@
 
 terraform {
-
   required_providers {
     randombyte = {
       source  = "Socolin/randombyte"
