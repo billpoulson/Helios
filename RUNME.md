@@ -3,7 +3,9 @@
 ## Apply
 
 ```sh {"id":"01J17WWPWXXZZG0AGRYEKJHMVH"}
-python3 ./scripts/runner.py --env dev --commands check-tool-installation util.bootstrap-cluster terraform-init-env terraform-apply-env --kube-context-name docker-desktop
+./helios bootstrap dev
+./helios init dev
+./helios apply dev
 ```
 
 ### Namespace Event Log
@@ -86,9 +88,7 @@ kubectl delete certificate exhelion-net-tls -n my-sample-app-development
 ### Reset Local Environment
 
 ```sh {"id":"01J0C67SDV9R5P7X81CAZ5M6ME"}
-python ./scripts/runner.py --env dev --commands check-tool-installation terraform-burn bootstrap-cluster terraform-apply-env
-
-
+./helios burn
 ```
 
 ### Init DotEnv
