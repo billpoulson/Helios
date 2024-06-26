@@ -47,6 +47,18 @@ module "ingress" {
         secret_name = module.certificate.tls_secret_name
       }]
     },
+    {
+      name         = "deno-1-function-ingress"
+      namespace    = var.namespace
+      service_name = module.deno_some_test_function_service.name
+      service_port = module.deno_some_test_function_service.service_port
+      host         = "www.${var.domain_common_name}"
+      path         = "/functions/deno1"
+      tls = [{
+        hosts       = ["www.${var.domain_common_name}"]
+        secret_name = module.certificate.tls_secret_name
+      }]
+    },
     # {
     #   name         = "app-ingress"
     #   namespace    = var.namespace

@@ -5,9 +5,7 @@ import fnmatch
 import configparser
 import sys
 
-env = os.getenv('TF_VAR_env', 'development')
-# print(f'TF_VAR_env: {env}')
-
+env = os.getenv('TF_VAR_env', '')
 
 def run_command(command, cwd=None):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, cwd=cwd)
@@ -50,8 +48,8 @@ def main():
 
     root_dir = '.'
         
-    # env_command_str = transform_env_value(env, env_map)
-    command = f'npx dotenv-vault@latest keys {env}'
+    env_command_str = transform_env_value(env, env_map)
+    command = f'npx dotenv-vault@latest keys {env_command_str}'
     
     vault_dirs = find_vault_directories(root_dir, exclude_patterns)
     all_keys = {}

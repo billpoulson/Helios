@@ -23,3 +23,13 @@ module "maint_site_service" {
   container_port = 80
   expose_port    = 80
 }
+
+module "deno_some_test_function_service" {
+  source         = "../../services"
+  env            = var.env
+  namespace      = var.namespace
+  name           = module.deno_some_test_function_deployment.name
+  container_port = 8080
+  expose_port    = 80
+}
+
