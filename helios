@@ -1,0 +1,90 @@
+#!/bin/bash
+
+# Check tool installation
+./scripts/linux/check-tool-installation
+
+# Export environment variables
+export HEL_SETTINGS_FILE="$(pwd)/helios.targets.json"
+export TF_VAR_helios_workspace=$PWD
+export TF_VAR_helios_runner=$PWD/scripts/runner.py
+export TF_DIR=$(pwd)/iac/terraform
+
+
+
+# Validate input arguments
+if [[ -z "$1" ]]; then
+    echo "Error: Missing command argument. Must be one of 'plan', 'apply', 'init' 'burn' or 'bootstrap'."
+    exit 1
+fi
+
+# Handle 'helios burn state' command separately
+if [[ "$1" == "burn" ]]; then
+    exec $PWD/scripts/linux/terraform-burn
+    echo "state was reset, reset your local kubernetes cluster to start fresh"
+    exit 1
+fi
+
+if [[ -z "$2" ]]; then
+    echo "Error: Missing environment argument. Must be one of 'local', 'dev', 'ci', 'prod'."
+    exit 1
+fi
+
+# Extract Kube context
+export HELIOS_KUBE_CONTEXT=$(jq -r ".$2.kube.context" $HEL_SETTINGS_FILE)
+if [ -z "$HELIOS_KUBE_CONTEXT" ]; then
+    echo "Error: HELIOS_KUBE_CONTEXT is not set. Ensure that the environment \"$2\" is correctly defined in $HEL_SETTINGS_FILE."
+    exit 1
+fi
+
+kubectl config use-context $HELIOS_KUBE_CONTEXT
+echo "Using Kube Context: $HELIOS_KUBE_CONTEXT"
+
+# Handle 'helios bootstrap' command separately
+if [[ "$1" == "bootstrap" ]] && [[ "$2" =~ ^(dev|stage|prod)$ ]]; then
+    exec $PWD/scripts/linux/bootstrap-cluster
+    elif [[ ! "$1" =~ ^(plan|apply|init)$ ]]; then
+    echo "Error: Invalid command argument. Must be one of 'plan', 'apply', 'init' or 'helios bootstrap'."
+    exit 1
+fi
+
+
+# Determine the environment
+case "$2" in
+    dev)
+        ENV_FILE="./iac/.env"
+    ;;
+    ci)
+        ENV_FILE="./iac/.env.ci"
+    ;;
+    next)
+        ENV_FILE="./iac/.env.next"
+    ;;
+    prod)
+        ENV_FILE="./iac/.env.production"
+    ;;
+    *)
+        echo "Error: Invalid environment argument. Must be one of 'dev', 'ci', 'prod', 'next'."
+        exit 1
+    ;;
+esac
+
+# Read the helios.targets.json file
+TF_MODULE=$(jq -r ".$2.module" $HEL_SETTINGS_FILE)
+if [ -z "$TF_MODULE" ]; then
+    echo "Error: The module for the environment \"$2\" does not exist in $HEL_SETTINGS_FILE."
+    exit 1
+fi
+
+# Echo the parameters that were read before running the final command
+cat << EOF
+Parameters:
+Command: $1
+Environment: $2
+ENV_FILE: $ENV_FILE
+HEL_SETTINGS_FILE: $HEL_SETTINGS_FILE
+TF_DIR: $TF_DIR
+TF_MODULE: $TF_MODULE
+EOF
+
+# Execute terraform command
+dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR $1 -target=$TF_MODULE

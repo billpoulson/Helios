@@ -13,7 +13,12 @@ resource "helm_release" "nginx_ingress" {
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = "ingress-nginx"
   version          = "4.0.6"
-  values           = [file("${path.module}/nginx-ingress-values.yml")]
+  values           = [file("./environments/${var.env}/nginx-ingress-values.yml")]
+}
+
+variable "env" {
+  description = "target environment"
+  type        = string
 }
 
 variable "cluster_http_ingress_port" {

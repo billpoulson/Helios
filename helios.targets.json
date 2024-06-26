@@ -1,0 +1,30 @@
+{
+  "dev": {
+    "module": "module.dev_env",
+    "dotenv": ".env",
+    "kube": {
+      "context": "docker-desktop"
+    }
+  },
+  "ci": {
+    "module": "module.ci_env",
+    "dotenv": ".env.ci",
+    "kube": {
+      "context": "docker-desktop"
+    }
+  },
+  "prod": {
+    "module": "module.prod_env",
+    "dotenv": ".env.production",
+    "kube": {
+      "context": "docker-desktop"
+    }
+  },
+  "next": {
+    "module": "module.prod_env",
+    "dotenv": ".env.next",
+    "kube": {
+      "context": "docker-desktop"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 // Retrieves the dotenv_keys from the source json file using external data source
 data "external" "dotenv_keys_json_generator" {
-  program     = ["python3", var.helios_runner, "--env", var.env, "--commands", "util.dotenv-export"]
+  program     = ["python3", "${var.helios_workspace}/scripts/util/dotenv-export.py", "--env", var.env]
   working_dir = var.helios_workspace
 }
 

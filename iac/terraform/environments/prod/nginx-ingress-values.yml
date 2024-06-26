@@ -1,0 +1,5 @@
+controller:
+  service:
+    ports:
+      http: 31081
+      https: 31444

@@ -14,11 +14,13 @@ check_command() {
 echo "Checking commands..."
 
 # Verify the following
+check_command "dotenv"
 check_command "docker"
 check_command "kubectl"
 check_command "terraform"
 check_command "helm"
 check_command "npx"
+check_command "jq"
 
 echo "All required commands are available."
 echo "Script execution completed."

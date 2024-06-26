@@ -1,0 +1,11 @@
+#!/bin/bash
+# set -e
+
+
+# Add Jetstack Helm repo
+helm repo add jetstack https://charts.jetstack.io
+# Update Helm repos
+helm repo update
+# Use specific kubernetes context
+# Install Cert Manager
+helm upgrade --install cert-manager --repo https://charts.jetstack.io cert-manager --namespace cert-manager --create-namespace --version v1.12.0 --set installCRDs=true

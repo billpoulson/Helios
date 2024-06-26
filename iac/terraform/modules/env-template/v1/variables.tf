@@ -3,6 +3,10 @@ variable "env" {
   description = "The environment name"
 }
 
+variable "namespace" {
+  type        = string
+  description = "environment namespace"
+}
 
 variable "kube_config_path" {
   description = "Path to the Kubernetes config file"
@@ -13,9 +17,7 @@ variable "kube_config_path" {
 variable "kube_context_name" {
   description = "Kubernetes config context to use"
   type        = string
-  # default     = "docker-desktop-dev"
 }
-
 
 variable "docker_image_version" {
   description = "Version of the Docker image"
@@ -33,7 +35,7 @@ variable "ngrok_authtoken" {
   type        = string
 }
 
-variable "domain_name" {
+variable "domain_common_name" {
   description = "ngrok domain name"
   type        = string
 }
@@ -42,11 +44,6 @@ variable "enable_maintenance" {
   description = "enable maintenance mode"
   type        = bool
   default     = false
-}
-
-variable "app_namespace" {
-  description = "app_namespace"
-  type        = string
 }
 
 variable "helios_workspace" {
@@ -59,14 +56,36 @@ variable "helios_runner" {
   type        = string
 }
 
-
-variable "letsencrypt_acmed_server_url_prod" {
-  default = "https://acme-v02.api.letsencrypt.org/directory"
+variable "primary_email_contact" {
+  description = "primary email contact "
+  type        = string
 }
 
-variable "letsencrypt_acme_server_url_stage" {
-  default = "https://acme-staging-v02.api.letsencrypt.org/directory"
+# variable "cluster_issuer" {
+#   description = "cluster certificate issuer"
+#   type        = string
+# }
+
+variable "dot_env_secret" {
+  description = "dot_env_project_key"
+  type        = string
+  default     = "dotenv-keys"
 }
+
+variable "acme_server_url" {
+  description = "acme server url"
+  type        = string
+}
+
+# variable "library" {
+#   description = "Library value"
+#   type = object({
+#     api       = map(string)
+#     functions = map(string)
+#     apps      = map(string)
+#   })
+# }
+
 
 variable "cluster_http_ingress_port" {
   description = "The port that the ingress controller listens on"
@@ -77,3 +96,4 @@ variable "cluster_https_ingress_port" {
   description = "The port that the ingress controller listens on"
   type        = number
 }
+
