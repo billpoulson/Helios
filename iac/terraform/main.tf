@@ -38,7 +38,7 @@ module "dev_env" {
 
   env                   = var.env
   namespace             = local.env_namespace
-  domain_common_name    = "exhelion-local.net"
+  domain_common_name    = "exhelion.net"
   primary_email_contact = local.primary_email_contact
   acme_server_url       = var.letsencrypt_acme_server_url_stage
 

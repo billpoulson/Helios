@@ -3,7 +3,7 @@ resource "kubernetes_ingress_v1" "ingress" {
 
   metadata {
     name      = each.value.name
-    namespace = each.value.namespace
+    namespace = var.namespace
   }
 
   spec {
@@ -17,9 +17,9 @@ resource "kubernetes_ingress_v1" "ingress" {
           path_type = "Prefix"
           backend {
             service {
-              name = each.value.service_name
+              name = var.maint_route.enable_maintenance ? var.maint_route.service_name : each.value.service_name
               port {
-                number = each.value.service_port
+                number = var.maint_route.enable_maintenance ? var.maint_route.service_port : each.value.service_port
               }
             }
           }

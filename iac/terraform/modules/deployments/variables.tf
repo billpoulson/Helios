@@ -12,10 +12,22 @@ variable "dot_env_secret" {
   type        = string
   default     = "dotenv-keys"
 }
+
 variable "dot_env_key" {
   description = "dot_env_project_key"
   type        = string
 }
+
+variable "replicas" {
+  description = "dot_env_project_key"
+  type        = number
+  default = 1
+}
+
+# variable "dot_env_target_env" {
+#   description = "dot env target"
+#   type        = string
+# }
 
 variable "image_pull_policy" {
   description = "docker image pull policy"

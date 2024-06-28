@@ -3,10 +3,13 @@ resource "kubernetes_deployment_v1" "deployment" {
   metadata {
     namespace = var.namespace
     name      = var.name
+    annotations = {
+      "linkerd.io/inject" = "enabled"
+    }
   }
 
   spec {
-    replicas = 1
+    replicas = var.replicas
     strategy {
       type = "RollingUpdate"
     }
@@ -45,13 +48,13 @@ resource "kubernetes_deployment_v1" "deployment" {
           }
 
           volume_mount {
-            name       = "shared-data"
+            name       = "data"
             mount_path = "/app/data"
           }
         }
 
         volume {
-          name = "shared-data"
+          name = "data"
           persistent_volume_claim {
             claim_name = var.default_volume_pvc_name
           }
