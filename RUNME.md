@@ -88,7 +88,7 @@ kubectl delete certificate exhelion-net-tls -n my-sample-app-development
 ### Reset Local Environment
 
 ```sh {"id":"01J0C67SDV9R5P7X81CAZ5M6ME"}
-./helios burn
+./helios wipe
 ```
 
 ### Init DotEnv
@@ -107,6 +107,21 @@ ln -s /mnt/c/Users/{user}/.kube/config ~/.kube/config
 
 ```
 
+### Bind a virtual domain name to your local development environment
+
 ```sh {"id":"01J1JAS70B6NWJJ091G0C8T0BX"}
 sudo python3 ./scripts/util/add_host.py my-sample-app.dev.local 127.0.0.1
+```
+
+### pod hostnames
+
+```sh {"id":"01J1MWQND23ARD7YTAKH01Q4F1"}
+kubectl exec -it exress-smoke-test-1-5cddb644bc-4r572 -n my-sample-app-dev -- curl http://service-b.your-namespace.svc.cluster.local
+
+
+```
+
+```sh {"id":"01J1MWVGYRBX153HXC7Q7K53PM"}
+kubectl exec -it exress-smoke-test-1-5cddb644bc-4r572 -n my-sample-app-dev -- cat /etc/hostname
+
 ```
