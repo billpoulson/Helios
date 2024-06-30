@@ -13,13 +13,21 @@ export TF_DIR=$(pwd)/iac/terraform
 
 # Validate input arguments
 if [[ -z "$1" ]]; then
-    echo "Error: Missing command argument. Must be one of 'plan', 'apply', 'init' 'burn' or 'bootstrap'."
+    echo "Error: Missing command argument. Must be one of 'plan', 'apply', 'init', 'burn', 'wipe' or 'bootstrap'."
     exit 1
 fi
 
 # Handle 'helios burn state' command separately
 if [[ "$1" == "burn" ]]; then
     exec $PWD/scripts/linux/terraform-burn
+    echo "state was reset, reset your local kubernetes cluster to start fresh"
+    exit 1
+fi
+# Handle 'helios wipe' command separately
+if [[ "$1" == "wipe" ]]; then
+    $PWD/helios burn && \
+    $PWD/helios bootstrap dev && \
+    $PWD/helios apply dev && \
     echo "state was reset, reset your local kubernetes cluster to start fresh"
     exit 1
 fi
@@ -41,7 +49,7 @@ echo "Using Kube Context: $HELIOS_KUBE_CONTEXT"
 
 # Handle 'helios bootstrap' command separately
 if [[ "$1" == "bootstrap" ]] && [[ "$2" =~ ^(dev|stage|prod)$ ]]; then
-    exec $PWD/scripts/linux/bootstrap-cluster
+    exec $PWD/scripts/linux/bootstrap-cluster $2
     elif [[ ! "$1" =~ ^(plan|apply|init)$ ]]; then
     echo "Error: Invalid command argument. Must be one of 'plan', 'apply', 'init' or 'helios bootstrap'."
     exit 1
@@ -70,6 +78,7 @@ esac
 
 # Read the helios.targets.json file
 TF_MODULE=$(jq -r ".$2.module" $HEL_SETTINGS_FILE)
+TF_CLUSTER_MODULE=$(jq -r ".$2.cluster_module" $HEL_SETTINGS_FILE)
 if [ -z "$TF_MODULE" ]; then
     echo "Error: The module for the environment \"$2\" does not exist in $HEL_SETTINGS_FILE."
     exit 1
@@ -84,7 +93,10 @@ ENV_FILE: $ENV_FILE
 HEL_SETTINGS_FILE: $HEL_SETTINGS_FILE
 TF_DIR: $TF_DIR
 TF_MODULE: $TF_MODULE
+TF_CLUSTER_MODULE: $TF_MODULE
 EOF
 
 # Execute terraform command
-dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR $1 -target=$TF_MODULE
+dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR init
+dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR $1 -target=$TF_CLUSTER_MODULE -auto-approve
+dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR $1 -target=$TF_MODULE -auto-approve

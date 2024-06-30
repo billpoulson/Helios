@@ -28,3 +28,7 @@ data/
 !.env.vault
 
 dotenv.keys.json
+*.crt
+*.pem
+
+iac/certificates/*

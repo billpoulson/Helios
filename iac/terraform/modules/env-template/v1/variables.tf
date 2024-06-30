@@ -25,16 +25,6 @@ variable "docker_image_version" {
   default     = "latest"
 }
 
-variable "ngrok_api_key" {
-  description = "API key for ngrok"
-  type        = string
-}
-
-variable "ngrok_authtoken" {
-  description = "ngrok auth token"
-  type        = string
-}
-
 variable "domain_common_name" {
   description = "ngrok domain name"
   type        = string
@@ -61,11 +51,6 @@ variable "primary_email_contact" {
   type        = string
 }
 
-# variable "cluster_issuer" {
-#   description = "cluster certificate issuer"
-#   type        = string
-# }
-
 variable "dot_env_secret" {
   description = "dot_env_project_key"
   type        = string
@@ -76,24 +61,3 @@ variable "acme_server_url" {
   description = "acme server url"
   type        = string
 }
-
-# variable "library" {
-#   description = "Library value"
-#   type = object({
-#     api       = map(string)
-#     functions = map(string)
-#     apps      = map(string)
-#   })
-# }
-
-
-variable "cluster_http_ingress_port" {
-  description = "The port that the ingress controller listens on"
-  type        = number
-}
-
-variable "cluster_https_ingress_port" {
-  description = "The port that the ingress controller listens on"
-  type        = number
-}
-

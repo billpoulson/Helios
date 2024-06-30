@@ -106,3 +106,7 @@ rm ~/.kube/config
 ln -s /mnt/c/Users/{user}/.kube/config ~/.kube/config
 
 ```
+
+```sh {"id":"01J1JAS70B6NWJJ091G0C8T0BX"}
+sudo python3 ./scripts/util/add_host.py my-sample-app.dev.local 127.0.0.1
+```

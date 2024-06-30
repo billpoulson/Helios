@@ -6,10 +6,13 @@ terraform {
   }
 }
 
+locals {
+  storage_name = "${var.volume_name}-${var.env}"
+}
 
 resource "kubernetes_persistent_volume" "data_pv" {
   metadata {
-    name = "${var.volume_name}-pv"
+    name = "${local.storage_name}-pv"
   }
 
   spec {
@@ -21,7 +24,7 @@ resource "kubernetes_persistent_volume" "data_pv" {
     storage_class_name               = "manual"
     persistent_volume_source {
       host_path {
-        path = "/mnt/data"
+        path = "/mnt/data/${var.volume_name}/${var.env}"
       }
     }
   }
@@ -29,8 +32,8 @@ resource "kubernetes_persistent_volume" "data_pv" {
 
 resource "kubernetes_persistent_volume_claim" "data_pvc" {
   metadata {
-    name      = "${var.volume_name}-pvc"
-    namespace = var.app_namespace
+    name      = "${local.storage_name}-pvc"
+    namespace = var.namespace
   }
 
   spec {

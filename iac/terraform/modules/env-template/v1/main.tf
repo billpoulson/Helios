@@ -43,20 +43,6 @@ module "database" {
   kubernetes_context = var.kube_context_name
 }
 
-# module "ngrok" {
-#   source = "../../ingress/ngrok"
-
-#   providers = {
-#     kubernetes = kubernetes
-#     helm       = helm
-#     docker     = docker
-#   }
-
-#   app_namespace   = var.namespace
-#   ngrok_api_key   = var.ngrok_api_key
-#   ngrok_authtoken = var.ngrok_authtoken
-# }
-
 module "storage" {
   source = "../../storage"
 
@@ -65,6 +51,7 @@ module "storage" {
   }
 
   namespace = var.namespace
+  env = var.env
 }
 
 module "dotenv" {
@@ -82,49 +69,3 @@ module "dotenv" {
   helios_workspace = var.helios_workspace
   kube_context     = var.kube_context_name
 }
-
-# resource "kubernetes_manifest" "kubernetes_admin_services_cluster_role" {
-#   manifest = {
-#     "kind" : "ClusterRole",
-#     "apiVersion" : "rbac.authorization.k8s.io/v1",
-#     "metadata" : {
-#       "name" : "nginx-access-clusterrole"
-#     },
-#     "rules" : [
-#       {
-#         "apiGroups" : [
-#           ""
-#         ],
-#         "resources" : [
-#           "services"
-#         ],
-#         "verbs" : [
-#           "get"
-#         ]
-#       }
-#     ]
-#   }
-# }
-# resource "kubernetes_manifest" "kubernetes_admin_services_role_binding" {
-#   depends_on = [kubernetes_manifest.kubernetes_admin_services_cluster_role]
-#   manifest = {
-#     "kind" : "ClusterRoleBinding",
-#     "apiVersion" : "rbac.authorization.k8s.io/v1",
-#     "metadata" : {
-#       "name" : "nginx-access-clusterrolebinding"
-#     },
-#     "subjects" : [
-#       {
-#         "kind" : "User",
-#         "name" : "kubernetes-admin",
-#         "apiGroup" : "rbac.authorization.k8s.io"
-#       }
-#     ],
-#     "roleRef" : {
-#       "kind" : "ClusterRole",
-#       "name" : "nginx-access-clusterrole",
-#       "apiGroup" : "rbac.authorization.k8s.io"
-#     }
-#   }
-
-# }

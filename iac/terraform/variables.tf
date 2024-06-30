@@ -23,16 +23,6 @@ variable "docker_image_version" {
   default     = "latest"
 }
 
-variable "ngrok_api_key" {
-  description = "API key for ngrok"
-  type        = string
-}
-
-variable "ngrok_authtoken" {
-  description = "ngrok auth token"
-  type        = string
-}
-
 variable "domain_name" {
   description = "ngrok domain name"
   type        = string
@@ -66,14 +56,4 @@ variable "letsencrypt_acmed_server_url_prod" {
 
 variable "letsencrypt_acme_server_url_stage" {
   default = "https://acme-staging-v02.api.letsencrypt.org/directory"
-}
-
-variable "cluster_http_ingress_port" {
-  description = "The port that the ingress controller listens on"
-  type        = number
-}
-
-variable "cluster_https_ingress_port" {
-  description = "The port that the ingress controller listens on"
-  type        = number
 }

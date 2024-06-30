@@ -7,9 +7,10 @@ terraform {
 }
 
 module "default_volume" {
-  source        = "../../modules/storage/default"
-  app_namespace = var.namespace
-  volume_name   = "default"
+  source      = "../../modules/storage/default"
+  namespace   = var.namespace
+  env         = var.env
+  volume_name = "default"
 }
 
 output "default_volume_pv_name" {

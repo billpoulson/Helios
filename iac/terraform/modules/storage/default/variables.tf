@@ -1,4 +1,8 @@
-variable "app_namespace" {
+variable "env" {
+  description = "app_namespace"
+  type        = string
+}
+variable "namespace" {
   description = "app_namespace"
   type        = string
 }

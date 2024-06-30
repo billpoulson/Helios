@@ -16,14 +16,11 @@ module "prod_env" {
   namespace             = local.env_namespace
   domain_common_name    = "exhelion.net"
   primary_email_contact = local.primary_email_contact
-  acme_server_url       = var.letsencrypt_acmed_server_url_prod
+  # acme_server_url       = var.letsencrypt_acmed_server_url_prod
+  acme_server_url = var.letsencrypt_acme_server_url_stage
 
-  helios_runner              = var.helios_runner
-  helios_workspace           = var.helios_workspace
-  ngrok_api_key              = var.ngrok_api_key
-  ngrok_authtoken            = var.ngrok_authtoken
-  cluster_http_ingress_port  = var.cluster_http_ingress_port
-  cluster_https_ingress_port = var.cluster_https_ingress_port
+  helios_runner    = var.helios_runner
+  helios_workspace = var.helios_workspace
 }
 
 module "dev_env" {
@@ -38,14 +35,19 @@ module "dev_env" {
 
   env                   = var.env
   namespace             = local.env_namespace
-  domain_common_name    = "exhelion.net"
+  domain_common_name    = "exhelion.local"
   primary_email_contact = local.primary_email_contact
   acme_server_url       = var.letsencrypt_acme_server_url_stage
 
-  helios_runner              = var.helios_runner
-  helios_workspace           = var.helios_workspace
-  ngrok_api_key              = var.ngrok_api_key
-  ngrok_authtoken            = var.ngrok_authtoken
-  cluster_http_ingress_port  = var.cluster_http_ingress_port
-  cluster_https_ingress_port = var.cluster_https_ingress_port
+  helios_runner    = var.helios_runner
+  helios_workspace = var.helios_workspace
+}
+
+
+module "docker_desktop_cluster" {
+  providers = {
+    docker = docker
+  }
+  source            = "./modules/cluster"
+  kube_context_name = "docker-desktop"
 }

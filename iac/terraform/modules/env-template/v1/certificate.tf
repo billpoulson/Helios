@@ -2,7 +2,6 @@ provider "kubernetes" {
   config_path            = "~/.kube/config"
   config_context_cluster = var.kube_context_name
 }
-
 module "certificate" {
   source = "../../certificate"
 

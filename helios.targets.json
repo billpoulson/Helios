@@ -1,6 +1,7 @@
 {
   "dev": {
     "module": "module.dev_env",
+    "cluster_module": "module.docker_desktop_cluster",
     "dotenv": ".env",
     "kube": {
       "context": "docker-desktop"
@@ -8,6 +9,7 @@
   },
   "ci": {
     "module": "module.ci_env",
+    "cluster_module": "module.docker_desktop_cluster",
     "dotenv": ".env.ci",
     "kube": {
       "context": "docker-desktop"
@@ -15,6 +17,7 @@
   },
   "prod": {
     "module": "module.prod_env",
+    "cluster_module": "module.docker_desktop_cluster",
     "dotenv": ".env.production",
     "kube": {
       "context": "docker-desktop"
@@ -22,6 +25,7 @@
   },
   "next": {
     "module": "module.prod_env",
+    "cluster_module": "module.docker_desktop_cluster",
     "dotenv": ".env.next",
     "kube": {
       "context": "docker-desktop"

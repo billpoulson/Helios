@@ -1,0 +1,15 @@
+#!/bin/bash
+# set -e
+
+ENVIRONMENT=$1
+SERVICE=$2
+
+
+mkdir -p ./iac/certificates/$ENVIRONMENT/$SERVICE
+
+step certificate create root.linkerd.cluster.local ./iac/certificates/$ENVIRONMENT/$SERVICE/ca.crt ./iac/certificates/$1/$SERVICE/ca.key \
+  --profile root-ca --no-password --insecure
+
+step certificate create identity.linkerd.cluster.local ./iac/certificates/$ENVIRONMENT/$SERVICE/issuer.crt ./iac/certificates/$ENVIRONMENT/$SERVICE/issuer.key \
+  --profile intermediate-ca --not-after 8760h --no-password --insecure \
+  --ca ./iac/certificates/$ENVIRONMENT/$SERVICE/ca.crt --ca-key ./iac/certificates/$ENVIRONMENT/$SERVICE/ca.key

@@ -21,6 +21,7 @@ check_command "terraform"
 check_command "helm"
 check_command "npx"
 check_command "jq"
+check_command "linkerd"
 
 echo "All required commands are available."
 echo "Script execution completed."

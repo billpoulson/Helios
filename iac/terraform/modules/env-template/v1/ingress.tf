@@ -1,9 +1,4 @@
-module "nginx-ingress" {
-  source                     = "../../ingress/nginx"
-  env                        = var.env
-  cluster_http_ingress_port  = var.cluster_http_ingress_port
-  cluster_https_ingress_port = var.cluster_https_ingress_port
-}
+
 
 module "ingress_http" {
   source    = "../../ingress/nginx/generic_http_ingress"

@@ -1,3 +1,11 @@
+resource "null_resource" "linkerd_inject" {
+  provisioner "local-exec" {
+    command = "kubectl get deployment ${kubernetes_deployment_v1.deployment.metadata[0].name} -n ${var.namespace} -o yaml | linkerd inject - | kubectl apply -f -"
+  }
+
+  depends_on = [kubernetes_deployment_v1.deployment]
+}
+
 resource "kubernetes_deployment_v1" "deployment" {
 
   metadata {
