@@ -7,6 +7,7 @@ resource "kubernetes_namespace_v1" "environment_namespace" {
     }
     annotations = {
       "linkerd.io/inject" = "enabled"
+      # "linkerd.io/proxy-control-plane-namespace" = "linkerd"
     }
   }
 }

@@ -4,7 +4,7 @@ resource "docker_image" "v1-functions-smoke-test-deno" {
   keep_locally = true
 
   build {
-    context = "../../functions/v1/smoke-test-deno"
+    context = "../../apps/v1/functions/smoke-test-deno"
     tag     = ["latest"]
   }
 
