@@ -18,7 +18,3 @@ resource "docker_image" "v1-mq-kafka-test-consumer" {
     context_hash = module.v1-mq-kafka-test-consumer-build-hash.value
   }
 }
-
-# output "name" {
-#   value = docker_image.v1-mq-kafka-test-consumer.name
-# }
