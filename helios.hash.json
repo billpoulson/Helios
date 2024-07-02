@@ -1,0 +1,7 @@
+{
+  "./apps/v1/api/oauth-service": "39cfdbea24289221efd9e6d2ad148ab15ba205beeb08a90a24dece545653841f",
+  "./apps/v1/functions/smoke-test": "a1e7c49fbdaaa99fd8808f4e9e1e90c073c9e9412a53a0c8e22e8e6f42010e31",
+  "./apps/v1/functions/smoke-test-deno": "80b20052576f82bb49ac8550a0065dc30465d333f85ba74032a4498c156ed7e3",
+  "./apps/v1/mq/kafka/test-consumer": "860c5373e13ac57c86a702563344fffcfdc3cefb693d43dd4e20948f2ed247e2",
+  "./apps/v1/mq/kafka/test-producer": "8272250728a2d668cc689ec50d1a3eae62a39c84b9400c1c921260abe698da1d"
+}

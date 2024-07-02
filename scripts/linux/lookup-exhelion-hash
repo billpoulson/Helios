@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Input file path
+input_path=$1
+
+# JSON file containing the key-value with MD5 hash
+json_file=$2
+
+# Strip off any leading / ./ ../ ../../ etc.
+clean_path=$(echo "$input_path" | sed -E 's@(/+|\./+|(\.\./)+)*@@' | sed -E 's@/+@/@g')
+
+# Append ./ to the cleaned path
+access_path="./$clean_path"
+
+# Access JSON file and retrieve the MD5 hash value
+md5_value=$(jq -r --arg path "$access_path" '.[$path]' "$json_file")
+
+# Return the MD5 hash value in JSON format
+jq -n --arg value "$md5_value" '{"value": $value}'

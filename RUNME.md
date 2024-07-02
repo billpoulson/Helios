@@ -125,3 +125,12 @@ kubectl exec -it exress-smoke-test-1-5cddb644bc-4r572 -n my-sample-app-dev -- cu
 kubectl exec -it exress-smoke-test-1-5cddb644bc-4r572 -n my-sample-app-dev -- cat /etc/hostname
 
 ```
+
+```sh {"id":"01J1QCZ0KMMVG5VZBHAV503JE7"}
+kubectl port-forward -n linkerd-viz svc/web 8084:8084
+linkerd viz dashboard
+```
+
+```sh {"id":"01J1QCZHX1NTNVEZBQYRP282H3"}
+
+```

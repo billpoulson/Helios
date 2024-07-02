@@ -12,6 +12,7 @@ module "docker_images" {
   providers = {
     docker = docker
   }
+  helios_workspace = var.helios_workspace
 }
 
 module "secrets" {

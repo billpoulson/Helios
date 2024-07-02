@@ -1,3 +1,26 @@
+module "kafka_producer" {
+  source = "../../deployments"
+
+  namespace               = var.namespace
+  name                    = "kafka-producer"
+  image                   = module.docker_images.library.kafka.test-producer
+  dot_env_secret          = var.dot_env_secret
+  dot_env_key             = "oauth-service"
+  default_volume_pvc_name = module.storage.default_volume_pvc_name
+  container_port          = "80"
+}
+module "kafka_consumer" {
+  source = "../../deployments"
+
+  namespace               = var.namespace
+  name                    = "kafka-consumer"
+  image                   = module.docker_images.library.kafka.test-consumer
+  dot_env_secret          = var.dot_env_secret
+  dot_env_key             = "oauth-service"
+  default_volume_pvc_name = module.storage.default_volume_pvc_name
+  container_port          = "80"
+}
+
 module "simple_oauth_deployment" {
   source = "../../deployments"
 

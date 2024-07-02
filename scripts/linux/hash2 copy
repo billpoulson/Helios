@@ -1,0 +1,69 @@
+# Function to calculate the hash of a directory
+calculate_hash() {
+    local dir=$1
+    find "$dir" -type f -exec sha256sum {} + | sort | sha256sum | awk '{print $1}'
+}
+
+# Function to read a value from an ini file
+read_ini_value() {
+    local file=$1
+    local section=$2
+    local key=$3
+    awk -F '=' -v section="$section" -v key="$key" '
+    $1 == "["section"]" {in_section=1; next}
+    in_section && $1 ~ /^\[/ {in_section=0}
+    in_section && $1 == key {
+        value=$2;
+        gsub(/^[ \t]+|[ \t]+$/, "", value);
+        gsub(/^\[|\]$/, "", value);
+        print value;
+        exit;
+    }
+    ' "$file"
+}
+
+# Log function for errors
+log_error() {
+    local message=$1
+    RED='\033[0;31m'
+    NC='\033[0m'  
+    echo -e "${RED}ERROR: $message${NC}"
+}
+
+# Log function for normal output
+log_info() {
+    local message=$1
+    GREEN='\033[0;32m'
+    NC='\033[0m'
+    echo -e "${GREEN}$message${NC}"
+}
+
+# Process all .helios files and compute hashes
+find ./apps/ -type f -name ".helios" | while read -r helios_file; do
+    folder=$(dirname "$helios_file")
+    # Read the build_hash_sources field from the [docker] section
+    build_hash_sources=$(read_ini_value "$helios_file" "docker" "build_hash_sources")
+    # Check if build_hash_sources is empty or not
+    if [[ -z "$build_hash_sources" ]]; then
+        log_error "No build_hash_sources found in $helios_file"
+        continue
+    fi
+
+    # Remove quotes and split the string into an array
+    build_hash_sources="${build_hash_sources//\'/}"
+    IFS=',' read -r -a directories <<< "$build_hash_sources"
+    
+    combined_hashes=""
+    for directory in "${directories[@]}"; do
+        directory=$(echo $directory | xargs)  # Trim whitespace
+        current_hash=$(calculate_hash "$folder/$directory")
+        combined_hashes+="$current_hash "
+    done
+    
+    # Create a combined hash if multiple directories
+    final_hash=$(echo -n "$combined_hashes" | sha256sum | awk '{print $1}')
+    log_info "Folder: $folder, Hash: $final_hash"
+done | sort -u
+
+# Disable debug mode
+set +x

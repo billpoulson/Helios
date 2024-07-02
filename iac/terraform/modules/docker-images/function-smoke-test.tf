@@ -1,3 +1,10 @@
+
+module "v1-functions-smoke-test-build-hash" {
+  source = "../docker-images/vx"
+  docker_context="../../apps/v1/functions/smoke-test"
+  helios_workspace = var.helios_workspace
+}
+
 resource "docker_image" "v1-functions-smoke-test" {
 
   name         = "v1-functions-smoke-test"
@@ -9,7 +16,8 @@ resource "docker_image" "v1-functions-smoke-test" {
   }
 
   triggers = {
-    context_hash = local.timestamp
+    context_hash = module.v1-functions-smoke-test-build-hash.value
+
   }
 
 }

@@ -1,0 +1,23 @@
+#!/bin/bash
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+ENV=$1
+export HEL_SETTINGS_FILE="$(pwd)/helios.targets.json"
+TF_KUBE_CONTEXT=$(jq -r ".$ENV.kube.context" $HEL_SETTINGS_FILE)
+NAMESPACE=kafka-$ENV
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+echo "installing zookeeper"
+helm upgrade \
+  --install my-zookeeper bitnami/zookeeper \
+  --create-namespace --namespace $NAMESPACE \
+  -f ./iac/terraform/environments/${TF_KUBE_CONTEXT}/kafka-values.yml
+
+echo "installing kafka"
+helm upgrade \
+  --install my-kafka bitnami/kafka \
+  --create-namespace --namespace $NAMESPACE \
+  -f ./iac/terraform/environments/${TF_KUBE_CONTEXT}/kafka-values.yml

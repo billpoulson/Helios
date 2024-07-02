@@ -1,5 +1,6 @@
 {
   "recommendations": [
-    "irongeek.vscode-env"
+    "irongeek.vscode-env",
+    "ms-python.autopep8"
   ]
 }

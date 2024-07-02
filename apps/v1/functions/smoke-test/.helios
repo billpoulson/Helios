@@ -1,2 +1,4 @@
 [dotenv]
 project=express-smoke-test-1
+[docker]
+build_hash_sources=['./src']

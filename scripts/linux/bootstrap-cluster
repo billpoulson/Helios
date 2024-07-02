@@ -1,36 +1,16 @@
 #!/bin/bash
-# set -e
+# Exit immediately if a command exits with a non-zero status
+set -e
 
-KUBE_CONTEXT_NAME=$1
+# Check if the environment variable is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <ENV>"
+    exit 1
+fi
 
-# Add Jetstack Helm repo
-helm repo add jetstack https://charts.jetstack.io
-helm repo add linkerd-edge https://helm.linkerd.io/edge
-# Update Helm repos
-helm repo update
+ENV=$1
 
-# # Use specific kubernetes context
-# # Install Cert Manager
-helm upgrade --install cert-manager --repo https://charts.jetstack.io cert-manager --namespace cert-manager --create-namespace --version v1.12.0 --set installCRDs=true
-
-
-
-linkerd check --pre
-
-# helm upgrade --install linkerd-edge/linkerd-crds --create-namespace --namespace linkerd \
-helm upgrade --install linkerd-crds linkerd-edge/linkerd-crds \
-  --create-namespace --namespace linkerd
-
-helm upgrade --install linkerd-control-plane linkerd-edge/linkerd-control-plane \
-  --namespace linkerd \
-  --set proxyInit.runAsRoot=true \
-  --set-file identityTrustAnchorsPEM=./iac/certificates/$KUBE_CONTEXT_NAME/linkerd/ca.crt \
-  --set-file identity.issuer.tls.crtPEM=./iac/certificates/$KUBE_CONTEXT_NAME/linkerd/issuer.crt \
-  --set-file identity.issuer.tls.keyPEM=./iac/certificates/$KUBE_CONTEXT_NAME/linkerd/issuer.key \
-
-linkerd check
-
-helm upgrade --install linkerd-viz linkerd-edge/linkerd-viz \
-  --namespace linkerd-viz --create-namespace
-
-# linkerd viz install | kubectl apply -f - # install the on-cluster metrics stack
+# Run the installation scripts
+./scripts/linux/install-cert-manager
+./scripts/linux/install-linkerd "$ENV"
+./scripts/linux/install-kafka "$ENV"

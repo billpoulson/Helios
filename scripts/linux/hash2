@@ -1,0 +1,6 @@
+find ./apps/ -type f -name ".helios" | while read -r helios_file; do
+    folder=$(dirname "$helios_file")
+    echo "folder $folder:"
+    echo "hash: $(./scripts/linux/hash-helios-source "$helios_file")"
+    echo ""
+done

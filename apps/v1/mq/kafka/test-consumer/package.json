@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@types/node": "^20.14.9",
+    "kafkajs": "^2.2.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}

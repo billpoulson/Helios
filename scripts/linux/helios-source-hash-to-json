@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Function to generate the JSON object
+generate_json() {
+    local json_output="$1"
+
+    # Temporary file to store the JSON output
+    local temp_file=$(mktemp)
+
+    # Initialize the temp file with the initial JSON output
+    echo "$json_output" > "$temp_file"
+
+    # Iterate through each .helios file found
+    find ./apps/ -type f -name ".helios" | while read -r helios_file; do
+        folder=$(dirname "$helios_file")
+        hash=$(./scripts/linux/hash-helios-source "$helios_file" 2>/dev/null || ./scripts/linux/helios-source-hash "$helios_file" || echo "error")
+        
+        # Use jq to update the JSON object
+        jq --arg folder "$folder" --arg hash "$hash" '.[$folder] = $hash' "$temp_file" > "$temp_file.tmp" && mv "$temp_file.tmp" "$temp_file"
+    done
+
+    # Read the final JSON output from the temp file
+    json_output=$(cat "$temp_file")
+
+    # Clean up the temporary file
+    rm "$temp_file"
+
+    echo "$json_output"
+}
+
+# Initialize an empty JSON object
+json_output="{}"
+
+# Generate the JSON object
+json_output=$(generate_json "$json_output")
+
+# Write the JSON object to helios.hash.json
+echo "$json_output" > helios.hash.json

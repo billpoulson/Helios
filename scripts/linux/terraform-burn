@@ -1,4 +1,7 @@
 #!/bin/bash
+# Exit immediately if a command exits with a non-zero status
+set -e
+
 envParam="$1"
 # Delete Terraform state files and directory
 rm -rf ./iac/terraform/.terraform

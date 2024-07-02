@@ -1,0 +1,19 @@
+zookeeper:
+  replicaCount: 1
+  auth:
+    enabled: false
+
+kafka:
+  replicaCount: 1
+  auth:
+    clientProtocol: plaintext
+  zookeeper:
+    enabled: false
+    connect: zookeeper:2181
+  externalZookeeper:
+  servers:
+    - my-zookeeper-0.my-zookeeper-headless.default.svc.cluster.local
+    - my-zookeeper-1.my-zookeeper-headless.default.svc.cluster.local
+    - my-zookeeper-2.my-zookeeper-headless.default.svc.cluster.local
+  kraft:
+    enabled: false

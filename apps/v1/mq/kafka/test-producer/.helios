@@ -1,4 +1,4 @@
 [dotenv]
-project=deno-smoke-test-1
+project=oauth-service
 [docker]
 build_hash_sources=['./src']

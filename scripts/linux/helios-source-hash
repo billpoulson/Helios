@@ -1,0 +1,66 @@
+#!/bin/bash
+# Function to calculate the hash of a directory
+calculate_hash() {
+    local dir=$1
+    find "$dir" -type f -exec sha256sum {} + | sort | sha256sum | awk '{print $1}'
+}
+
+# Function to read a value from an ini file
+read_ini_value() {
+    local file=$1
+    local section=$2
+    local key=$3
+    awk -F '=' -v section="$section" -v key="$key" '
+    $1 == "["section"]" {in_section=1; next}
+    in_section && $1 ~ /^\[/ {in_section=0}
+    in_section && $1 == key {
+        value=$2;
+        gsub(/^[ \t]+|[ \t]+$/, "", value);
+        gsub(/^\[|\]$/, "", value);
+        print value;
+        exit;
+    }
+    ' "$file"
+}
+
+# Log function for errors
+log_error() {
+    local message=$1
+    RED='\033[0;31m'
+    NC='\033[0m'
+    echo -e "${RED}ERROR: $message${NC}" >&2
+}
+
+# Check if a path to a .helios file is provided
+if [[ -z "$1" ]]; then
+    log_error "No path to the .helios file provided"
+    exit 1
+fi
+
+helios_file=$1
+folder=$(dirname "$helios_file")
+
+# Read the build_hash_sources field from the [docker] section
+build_hash_sources=$(read_ini_value "$helios_file" "docker" "build_hash_sources")
+
+# Check if build_hash_sources is empty or not
+if [[ -z "$build_hash_sources" ]]; then
+    log_error "No build_hash_sources found in $helios_file"
+    echo "NO HASH PRODUCED"
+    exit 1
+fi
+# Remove quotes and split the string into an array
+build_hash_sources="${build_hash_sources//\'/}"
+IFS=',' read -r -a directories <<< "$build_hash_sources"
+
+combined_hashes=""
+for directory in "${directories[@]}"; do
+    directory=$(echo $directory | xargs)  # Trim whitespace
+    current_hash=$(calculate_hash "$folder/$directory")
+    combined_hashes+="$current_hash "
+done
+
+# Create a combined hash if multiple directories
+final_hash=$(echo -n "$combined_hashes" | sha256sum | awk '{print $1}')
+
+echo "$final_hash"

@@ -1,0 +1,71 @@
+#!/bin/bash
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Define the color codes
+GREEN="\e[32m"
+BLUE="\e[34m"
+RED="\e[31m"
+RESET="\e[0m"
+
+logo_content=$(cat ./scripts/linux/resources/logo.ascii)
+health_check_content=$(cat ./scripts/linux/resources/health-check.ascii)
+ok_content=$(cat ./scripts/linux/resources/ok.ascii)
+error_content=$(cat ./scripts/linux/resources/error.ascii)
+
+echo -e "${BLUE}${logo_content}${RESET}"
+echo ""
+echo ""
+echo ""
+echo -e "${GREEN}${health_check_content}${RESET}"
+echo ""
+echo ""
+echo ""
+# Function to check for presence of .env.vault and .helios in given directory
+check_directory() {
+    local dir=$1
+    local helios_file="$dir/.helios"
+    local vault_file="$dir/.env.vault"
+    if [[ -f "$helios_file" ]]; then
+        if [[ -f "$vault_file" ]]; then
+            echo -e "\e[32mFound both .helios and .env.vault in directory: $dir\e[0m"
+        else
+            echo -e "\e[31mError: .env.vault is missing in directory: $dir. Please ensure that .env.vault is connected in each repo.\e[0m" >&2
+            return 1
+        fi
+    fi
+    return 0
+}
+
+# Exported function to handle find's -exec
+export -f check_directory
+
+# Flag to capture the overall success/failure
+overall_success=0
+
+# Find directories containing .helios and then check if .env.vault exists in them
+while IFS= read -r -d '' dir; do
+    if ! check_directory "$(dirname "$dir")"; then
+        overall_success=1
+    fi
+done < <(find . -type f -name ".helios" -print0)
+
+if [[ $overall_success -ne 0 ]]; then
+    echo -e "\e[31mError: Health check failed. Exiting script to prevent further execution.\e[0m" >&2
+    echo ""
+    echo ""
+    echo -e "${RED}${error_content}${RESET}"
+    echo ""
+    echo ""
+    exit 1
+else
+    echo ""
+    echo -e "\e[32mHealth check passed successfully.\e[0m"
+    echo ""
+    echo ""
+    echo -e "${GREEN}${ok_content}${RESET}"
+    echo ""
+    echo ""
+    echo ""
+fi
+
