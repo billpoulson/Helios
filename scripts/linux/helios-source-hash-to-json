@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 # Function to generate the JSON object
 generate_json() {
     local json_output="$1"
