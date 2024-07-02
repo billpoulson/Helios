@@ -34,11 +34,11 @@ const run = async () => {
     });
   } catch (error) {
     console.error('Error in Kafka consumer:', error);
-    process.exit(1); // Exit with failure code
+    // process.exit(1); // Exit with failure code
   }
 };
 
 run().catch(error => {
   console.error('Error in Kafka consumer run:', error);
-  process.exit(1); // Exit with failure code
+  // process.exit(1); // Exit with failure code
 });

@@ -9,7 +9,12 @@ const kafka = new Kafka({
 });
 
 const producer = kafka.producer({
-  createPartitioner: Partitioners.LegacyPartitioner
+  createPartitioner: Partitioners.LegacyPartitioner,
+  retry: {
+    retries: 10,
+    initialRetryTime: 300,
+    factor: 0.2,
+  }
 });
 
 const run = async () => {
@@ -21,6 +26,7 @@ const run = async () => {
         messages: [
           { value: `Hello KafkaJS user! ${i}` },
         ],
+        timeout: 60000, // Setting a higher timeout
       });
     }
   } catch (error) {
@@ -33,3 +39,4 @@ const run = async () => {
 run().catch(error => {
   console.error('Failed to execute run:', error);
 });
+
