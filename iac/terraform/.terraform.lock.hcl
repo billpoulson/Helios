@@ -118,6 +118,26 @@ provider "registry.terraform.io/kreuzwerker/docker" {
   ]
 }
 
+provider "registry.terraform.io/mongey/kafka" {
+  version     = "0.3.3"
+  constraints = "~> 0.3.0"
+  hashes = [
+    "h1:PlIt9kCsvvKT+kk5qVHfUK6vOR6/QisigUxVj+L2l+4=",
+    "zh:03eb0489cfdc5a3c2803b43bf9746377611e2bcbe1e1f242a3fa38063835d020",
+    "zh:22efe4db936db37af733eb72bd075a1781d4e8e03d765ce0ad1df2c8c28f1760",
+    "zh:3a2b4cbe6bd68b050be61f090cc49178ede5c0c8264ff1e56b7a615cfbeff851",
+    "zh:3c84f56db931bc8a529a1935b10ae940d823430aefe8345f3dff373b79406378",
+    "zh:4d3a5bb0a0a53648859aa7465f136d2dc4beb11a8bf765c6a0ca275925259040",
+    "zh:7c43fd95a040aecf6ad69d0d15da8f00d32594f9e6e46657b46484c211ce1005",
+    "zh:7feac69e51f1d1e520a08b8530c3187089148939e966cab2e84f516d5ee5592e",
+    "zh:99b5521721dabe8b2ed4a3370947967231d75587000d25b02735adb6ac4aa50a",
+    "zh:b9b644bbe24fa3381cc87a4ba0937cf44ac44ba3ec888593faeb129daa5a60ea",
+    "zh:c1eb86d8265f9af90b7d9f80f337b111c40cf4f410ae600539b6c4da7c3b0d6a",
+    "zh:eeb7319684aef9f38d08b6274a10b0f55fa4875483257d2320d8c775a3d7ce3b",
+    "zh:f2c7f60206efae1e10948668f5dbe25297104c794b815ec318808b540dfb049a",
+  ]
+}
+
 provider "registry.terraform.io/socolin/randombyte" {
   version     = "1.0.2"
   constraints = "1.0.2"

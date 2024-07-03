@@ -6,14 +6,17 @@ zookeeper:
 kafka:
   replicaCount: 1
   auth:
+    # clientProtocol: sasl_plaintext  # Changed to match the provided output configuration
     clientProtocol: plaintext
   zookeeper:
     enabled: false
-    connect: zookeeper:2181
+    connect:
+      - my-zookeeper-0.kafka-dev.svc.cluster.local:2181  # Simplified DNS name based on the output
   externalZookeeper:
-  servers:
-    - my-zookeeper-0.my-zookeeper-headless.default.svc.cluster.local
-    - my-zookeeper-1.my-zookeeper-headless.default.svc.cluster.local
-    - my-zookeeper-2.my-zookeeper-headless.default.svc.cluster.local
+    servers:
+      - my-zookeeper-0.kafka-dev.svc.cluster.local  # Simplified DNS name based on the output
   kraft:
     enabled: false
+
+---
+# Note: As per the output given, SASL mechanism and JAAS configuration for Kafka clients would also need to be provided in a suitable configuration file, but since it was not specified in the provided YAML structure, the user will need to ensure they create the necessary `client.properties` as per the provided commands in the output.

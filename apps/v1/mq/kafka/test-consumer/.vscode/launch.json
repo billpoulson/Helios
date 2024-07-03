@@ -1,0 +1,48 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/src/index.ts",
+      "args": [
+        "--exec",
+        "ts-node",
+        "--",
+        "-r",
+        "dotenv/config",
+        "-I"
+      ],
+      "restart": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "sourceMaps": true,
+      "runtimeArgs": [
+        "--ext",
+        "ts,js,json",
+        "--ignore",
+        ".git",
+        "--ignore",
+        "node_modules",
+        "--ignore",
+        "node_modules/**/node_modules",
+        "--ignore",
+        "src/**/*.spec.ts",
+        "--watch",
+        "src/**/*.ts",
+        "--watch",
+        "../../test/",
+        "--watch",
+        "../../packages/**/*.ts"
+      ]
+    }
+  ]
+}

@@ -1,88 +1,57 @@
-resource "kubernetes_deployment_v1" "kafka" {
-  metadata {
-    name      = "kafka"
-    namespace = var.namespace
-    labels = {
-      app = "kafka"
-    }
-  }
 
-  spec {
-    replicas = 1
+provider "kafka" {
+  bootstrap_servers = [
+    "my-kafka-controller-0.my-kafka-controller-headless.kafka-dev.svc.cluster.local:9092",
+    "my-kafka-controller-1.my-kafka-controller-headless.kafka-dev.svc.cluster.local:9092",
+    "my-kafka-controller-2.my-kafka-controller-headless.kafka-dev.svc.cluster.local:9092",
+  ]
 
-    selector {
-      match_labels = {
-        app = "kafka"
-      }
-    }
+  # sasl_username = "user1"
+  # sasl_password = "boMGjEa3iL"
+}
 
-    template {
-      metadata {
-        labels = {
-          app = "kafka"
-        }
-      }
-
-      spec {
-        container {
-          name  = "kafka"
-          image = "wurstmeister/kafka:latest"
-
-          port {
-            container_port = 9092
-          }
-          # env {
-          #   name  = "PORT"
-          #   value = "9092"
-          # }
-          env {
-            name  = "KAFKA_LISTENERS"
-            value = "PLAINTEXT://0.0.0.0:9092"
-          }
-
-          env {
-            name  = "KAFKA_ZOOKEEPER_CONNECT"
-            value = "zookeeper-headless.${var.namespace}.cluster.local:2181"
-          }
-
-          env {
-            name  = "KAFKA_ADVERTISED_LISTENERS"
-            value = "PLAINTEXT://kafka.${var.namespace}.svc.cluster.local:9092"
-          }
-
-
-          env {
-            name  = "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR"
-            value = "3"
-          }
-        }
-      }
-    }
+resource "kafka_topic" "simple-topic" {
+  name               = "simple-topic"
+  replication_factor = 3
+  partitions         = 3
+  config = {
+    "cleanup.policy" = "compact"
   }
 }
 
-resource "kubernetes_service_v1" "kafka" {
-  metadata {
-    name      = "kafka"
-    namespace = var.namespace
-    labels = {
-      app = "kafka"
-    }
-  }
+# resource "kafka_topic" "test_topic_x" {
+#   name               = "test-topic-x"
+#   replication_factor = 3
+#   partitions         = 3
+#   config = {
+#     "cleanup.policy" = "compact"
+#   }
+# }
 
-  spec {
-    type = "ClusterIP"
-    selector = {
-      app = "kafka"
-    }
+# resource "kafka_topic" "test_topic" {
+#   name               = "test-topic"
+#   replication_factor = 3
+#   partitions         = 3
+#   config = {
+#     "cleanup.policy" = "compact"
+#   }
+# }
 
-    port {
-      port        = 9092
-      target_port = 9092
-    }
-  }
-}
+# resource "kafka_topic" "example_topic" {
+#   name               = "example-topic"
+#   replication_factor = 3
+#   partitions         = 3
+#   config = {
+#     "cleanup.policy" = "compact"
+#   }
+# }
 
-# output "kafka_service" {
-#   value = "kafka.${var.namespace}.svc.cluster.local:${kubernetes_service_v1.kafka.spec.0.port.0.port}"
+# resource "kafka_topic" "another_topic" {
+#   name               = "another-topic"
+#   replication_factor = 3
+#   partitions         = 3
+#   config = {
+#     "cleanup.policy" = "delete",
+#     "retention.ms"   = "604800000" # 7 days
+#   }
 # }

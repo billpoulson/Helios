@@ -1,4 +1,4 @@
 [dotenv]
 project=oauth-service
 [docker]
-build_hash_sources=['./src']
+build_hash_sources=['./src','./dockerfile', '.env.vault']

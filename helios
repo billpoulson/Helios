@@ -91,7 +91,7 @@ ENV_FILE: $ENV_FILE
 HEL_SETTINGS_FILE: $HEL_SETTINGS_FILE
 TF_DIR: $TF_DIR
 TF_MODULE: $TF_MODULE
-TF_CLUSTER_MODULE: $TF_MODULE
+TF_CLUSTER_MODULE: $TF_CLUSTER_MODULE
 EOF
 
 # Check tool installation
@@ -100,6 +100,6 @@ EOF
 ./scripts/linux/helios-source-hash-to-json
 # Execute terraform command
 dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR init
-dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR $1 -target=$TF_CLUSTER_MODULE -auto-approve
+# dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR $1 -target=$TF_CLUSTER_MODULE -auto-approve
 dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR $1 -target=$TF_MODULE -auto-approve
-# dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR $1 -target=module.dev_env.module.kafka -auto-approve
+dotenv -e $ENV_FILE -- terraform -chdir=$TF_DIR $1 -target=module.kafka -auto-approve

@@ -1,7 +1,16 @@
 {
+  "scripts": {
+    "start": "node ./dist/producer.js",
+    "build": "npx tsc",
+    "watch:types": "nodemon --config .nodemon/types.nodemon.json"
+  },
   "dependencies": {
+    "dotenv": "^16.4.5",
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
     "@types/node": "^20.14.9",
-    "kafkajs": "^2.2.4",
+    "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
   }

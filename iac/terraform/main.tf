@@ -51,3 +51,9 @@ module "docker_desktop_cluster" {
   source            = "./modules/cluster"
   kube_context_name = "docker-desktop"
 }
+
+
+module "kafka" {
+  source = "./modules/mq/kafka"
+  namespace = var.app_namespace
+}
