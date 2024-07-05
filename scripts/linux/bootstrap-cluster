@@ -11,6 +11,6 @@ fi
 ENV=$1
 
 # Run the installation scripts
-./scripts/linux/install-cert-manager
-./scripts/linux/install-linkerd "$ENV"
+# ./scripts/linux/install-cert-manager
+# ./scripts/linux/install-linkerd "$ENV"
 ./scripts/linux/install-kafka "$ENV"

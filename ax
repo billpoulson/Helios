@@ -1,0 +1,9 @@
+# #!/bin/bash
+# kafka_pod=$(kubectl get pods -l app.kubernetes.io/name=kafka -o jsonpath="{.items[0].metadata.name}")
+# kubectl exec -it $kafka_pod -- bash
+# # Inside the Kafka pod:
+# zookeeper-shell.sh my-zookeeper.kafka-dev.svc.cluster.local:2181
+helm upgrade \
+  --install my-zookeeper bitnami/zookeeper \
+  --create-namespace --namespace $NAMESPACE \
+  -f ./iac/terraform/environments/${TF_KUBE_CONTEXT}/zookeeper-values.yml

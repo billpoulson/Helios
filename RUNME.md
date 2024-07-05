@@ -132,5 +132,9 @@ linkerd viz dashboard
 ```
 
 ```sh {"id":"01J1QCZHX1NTNVEZBQYRP282H3"}
+kubectl port-forward svc/my-kafka -n kafka-dev 9092:9092
+```
 
+```sh {"id":"01J21JYJVQE27XR6S22EJ0WWEC"}
+kafka-leader-election.sh --bootstrap-server localhost:9092 --election-type preferred --all-topic-partitions
 ```

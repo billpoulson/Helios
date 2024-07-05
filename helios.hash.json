@@ -2,6 +2,6 @@
   "./apps/v1/api/oauth-service": "1253e24858ee0a23d4f3f8bb0c35b993e7a66a3b80a314a16d5ffbeaf5a494f9",
   "./apps/v1/functions/smoke-test": "c6d959c32a3da42d52a72fe08159d8af5c8032319d07b81d7ae121537ba887dc",
   "./apps/v1/functions/smoke-test-deno": "8d9600a717d4a8e56443afddc9e8146c1d1eebb8ad42cbcc55af6c6f78f460e1",
-  "./apps/v1/mq/kafka/test-consumer": "1d00a02f412c6bf878b8f4c792192776d1ca1f1f68a0ffc6534547dada0f1f36",
-  "./apps/v1/mq/kafka/test-producer": "8ce2696a086f7344a83aff5863f3b4d765dc5972308618b570732a0f1a02eec7"
+  "./apps/v1/mq/kafka/test-consumer": "0da8bd1ee1bafc070a185b2a65676418b8bc4d2231bce897cb233953806f6f3d",
+  "./apps/v1/mq/kafka/test-producer": "1b1cbd485b4d6fb9b3fe5cc89b964c31244c4acbf22c9df830efbc2358fc7c1b"
 }

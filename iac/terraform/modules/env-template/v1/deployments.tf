@@ -190,7 +190,6 @@ resource "kubernetes_deployment_v1" "oauth_manager" {
   }
 }
 
-
 # Deployment
 resource "kubernetes_deployment_v1" "oauth_manager_api" {
   metadata {
@@ -330,6 +329,49 @@ resource "kubernetes_deployment_v1" "oauth_manager_api_subdomain" {
             claim_name = module.storage.default_volume_pvc_name
           }
         }
+      }
+    }
+  }
+}
+
+resource "kubernetes_deployment_v1" "util_kafka" {
+  metadata {
+    namespace = "kafka-dev"
+    # namespace = var.namespace
+    name      = "util-kafka"
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "util-kafka"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "util-kafka"
+        }
+      }
+
+      spec {
+
+        container {
+          name              = "util-kafka"
+          image             = module.docker_images.List["util-kafka"]
+          image_pull_policy = "IfNotPresent"
+          port {
+            container_port = 8000
+          }
+          env {
+            name  = "BROKER"
+            value = "my-kafka-controller-headless.kafka-dev.svc.cluster.local:9092"
+          }
+        }
+
       }
     }
   }

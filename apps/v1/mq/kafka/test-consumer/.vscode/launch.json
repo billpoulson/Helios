@@ -37,6 +37,8 @@
         "--ignore",
         "src/**/*.spec.ts",
         "--watch",
+        ".env",
+        "--watch",
         "src/**/*.ts",
         "--watch",
         "../../test/",

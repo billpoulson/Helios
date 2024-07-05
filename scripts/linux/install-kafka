@@ -11,13 +11,14 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
 echo "installing zookeeper"
-helm upgrade \
-  --install my-zookeeper bitnami/zookeeper \
-  --create-namespace --namespace $NAMESPACE \
-  -f ./iac/terraform/environments/${TF_KUBE_CONTEXT}/kafka-values.yml
+# helm upgrade \
+#   --install my-zookeeper bitnami/zookeeper \
+#   --create-namespace --namespace $NAMESPACE \
+#   -f ./iac/terraform/environments/${TF_KUBE_CONTEXT}/zookeeper-values.yml
 
 echo "installing kafka"
 helm upgrade \
   --install my-kafka bitnami/kafka \
   --create-namespace --namespace $NAMESPACE \
   -f ./iac/terraform/environments/${TF_KUBE_CONTEXT}/kafka-values.yml
+  

@@ -1,22 +1,71 @@
-zookeeper:
-  replicaCount: 1
-  auth:
-    enabled: false
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+  namespaceOverride: ""
 
 kafka:
-  replicaCount: 1
-  auth:
-    # clientProtocol: sasl_plaintext  # Changed to match the provided output configuration
-    clientProtocol: plaintext
+  enabled: true
   zookeeper:
+    enabled: false  # Disable Zookeeper
+  image:
+    registry: docker.io
+    repository: bitnami/kafka
+    tag: 3.1.0-debian-10-r28
+  replicaCount: 3
+  resources:
+    requests:
+      memory: 1024Mi
+      cpu: 500m
+    limits:
+      memory: 2048Mi
+      cpu: 1000m
+  persistence:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+  configurationOverrides: 
+    server.properties: |
+      process.roles=broker,controller
+      node.id=1
+      controller.quorum.voters=1@broker-0.broker-headless.default.svc.cluster.local:9093,2@broker-1.broker-headless.default.svc.cluster.local:9093,3@broker-2.broker-headless.default.svc.cluster.local:9093
+      listeners=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      listener.security.protocol.map=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      inter.broker.listener.name=PLAINTEXT
+      controller.listener.names=CONTROLLER
+      log.dirs=/bitnami/kafka/data
+      log.retention.hours=168
+      log.segment.bytes=1073741824
+      offsets.topic.replication.factor=1
+      transaction.state.log.replication.factor=1
+      transaction.state.log.min.isr=1
+      group.initial.rebalance.delay.ms=0
+      group.min.session.timeout.ms=6000
+      group.max.session.timeout.ms=300000
+      zookeeper.session.timeout.ms=6000
+      replica.lag.time.max.ms=5000
+
+service:
+  type: ClusterIP
+  port: 9092
+  nodePort: ""
+  externalPort: ""
+  loadBalancerIP: ""
+  annotations: {}
+  loadBalancerSourceRanges: []
+
+metrics:
+  kafka:
     enabled: false
-    connect:
-      - my-zookeeper-0.kafka-dev.svc.cluster.local:2181  # Simplified DNS name based on the output
-  externalZookeeper:
-    servers:
-      - my-zookeeper-0.kafka-dev.svc.cluster.local  # Simplified DNS name based on the output
-  kraft:
+  jmx:
     enabled: false
 
----
-# Note: As per the output given, SASL mechanism and JAAS configuration for Kafka clients would also need to be provided in a suitable configuration file, but since it was not specified in the provided YAML structure, the user will need to ensure they create the necessary `client.properties` as per the provided commands in the output.
+rbac:
+  create: true
+
+podAnnotations: {}
+affinity: {}
+nodeSelector: {}
+tolerations: []

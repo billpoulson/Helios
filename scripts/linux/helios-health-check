@@ -13,14 +13,72 @@ health_check_content=$(cat ./scripts/linux/resources/health-check.ascii)
 ok_content=$(cat ./scripts/linux/resources/ok.ascii)
 error_content=$(cat ./scripts/linux/resources/error.ascii)
 
-echo -e "${BLUE}${logo_content}${RESET}"
-echo ""
-echo ""
-echo ""
-echo -e "${GREEN}${health_check_content}${RESET}"
-echo ""
-echo ""
-echo ""
+green_spectrum_string() {
+    local input="$1"
+    local length="${#input}"
+    local result=""
+
+    # Define the green spectrum color codes (32 for green, 92 for bright green)
+    local green_colors=(32 92 82) 
+
+    for (( i=0; i<length; i++ )); do
+        char="${input:i:1}"
+        if [[ "$char" != " " ]]; then
+            # Select a random color from the green spectrum
+            color=${green_colors[$RANDOM % ${#green_colors[@]}]}
+            result+=$(printf "\e[${color}m%s\e[0m" "$char")
+        else
+            result+="$char"
+        fi
+    done
+
+    echo -e "$result"
+}
+
+red_spectrum_string() {
+    local input="$1"
+    local length="${#input}"
+    local result=""
+
+    # Define the red spectrum color codes (31 for red, 91 for bright red)
+    local red_colors=(31 91)
+
+    for (( i=0; i<length; i++ )); do
+        char="${input:i:1}"
+        if [[ "$char" != " " ]]; then
+            # Select a random color from the red spectrum
+            color=${red_colors[$RANDOM % ${#red_colors[@]}]}
+            result+=$(printf "\e[${color}m%s\e[0m" "$char")
+        else
+            result+="$char"
+        fi
+    done
+
+    echo -e "$result"
+}
+random_color_string() {
+    local input="$1"
+    local length="${#input}"
+    local result=""
+
+    for (( i=0; i<length; i++ )); do
+        char="${input:i:1}"
+        if [[ "$char" != " " ]]; then
+            # Generating a random color code (31-37 for colored text, 90-97 for bright colors)
+            color=$((31 + RANDOM % 7))
+            result+=$(printf "\e[${color}m%s\e[0m" "$char")
+        else
+            result+="$char"
+        fi
+    done
+
+    echo -e "$result"
+}
+
+random_color_string "$logo_content"
+echo -e "\n"
+random_color_string "$health_check_content"
+
 # Function to check for presence of .env.vault and .helios in given directory
 check_directory() {
     local dir=$1
@@ -53,19 +111,14 @@ done < <(find . -type f -name ".helios" -print0)
 if [[ $overall_success -ne 0 ]]; then
     echo -e "\e[31mError: Health check failed. Exiting script to prevent further execution.\e[0m" >&2
     echo ""
-    echo ""
-    echo -e "${RED}${error_content}${RESET}"
-    echo ""
+    red_spectrum_string "$error_content"
     echo ""
     exit 1
 else
     echo ""
     echo -e "\e[32mHealth check passed successfully.\e[0m"
     echo ""
-    echo ""
-    echo -e "${GREEN}${ok_content}${RESET}"
-    echo ""
-    echo ""
+    green_spectrum_string "$ok_content"
     echo ""
 fi
 

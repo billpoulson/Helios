@@ -1,0 +1,2 @@
+#!/bin/bash
+kubectl port-forward svc/my-kafka -n kafka-dev 9092:9092

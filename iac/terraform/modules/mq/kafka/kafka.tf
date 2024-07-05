@@ -1,19 +1,20 @@
 
 provider "kafka" {
   bootstrap_servers = [
-    "my-kafka-controller-0.my-kafka-controller-headless.kafka-dev.svc.cluster.local:9092",
-    "my-kafka-controller-1.my-kafka-controller-headless.kafka-dev.svc.cluster.local:9092",
-    "my-kafka-controller-2.my-kafka-controller-headless.kafka-dev.svc.cluster.local:9092",
+    "127.0.0.1:9092",
   ]
-
-  # sasl_username = "user1"
-  # sasl_password = "boMGjEa3iL"
+  sasl_username   = "user1"
+  sasl_password   = "boMGjEa3iL"
+  sasl_mechanism    = "scram-sha256"  # Example mechanism, replace if necessary
+  # sasl_username   = "controller_user"
+  # sasl_password   = "sP3RTHDsI0"
+  skip_tls_verify = true
 }
 
-resource "kafka_topic" "simple-topic" {
-  name               = "simple-topic"
-  replication_factor = 3
-  partitions         = 3
+resource "kafka_topic" "test-topic" {
+  name               = "test-topic"
+  replication_factor = 1
+  partitions         = 1
   config = {
     "cleanup.policy" = "compact"
   }

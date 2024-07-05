@@ -1,0 +1,10 @@
+#!/bin/bash
+docker build -t kafka-cli .
+# docker run -it \
+#   --rm \
+#   --network="host" \
+#   --add-host my-kafka-controller-0.my-kafka-controller-headless.kafka-dev.svc.cluster.local:192.168.50.31 \
+#   --add-host my-kafka-controller-1.my-kafka-controller-headless.kafka-dev.svc.cluster.local:192.168.50.31 \
+#   --add-host my-kafka-controller-2.my-kafka-controller-headless.kafka-dev.svc.cluster.local:192.168.50.31 \
+#   --add-host my-kafka.kafka-dev.svc.cluster.local:192.168.50.31 \
+#   kafka-cli
