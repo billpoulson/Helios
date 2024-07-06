@@ -6,6 +6,15 @@ global:
 
 kafka:
   enabled: true
+  # controller:
+  #   replicaCount: 1
+  #   resources:
+  #     requests:
+  #       memory: 1024Mi
+  #       cpu: 500m
+  #     limits:
+  #       memory: 2048Mi
+  #       cpu: 1000m
   zookeeper:
     enabled: false  # Disable Zookeeper
   image:
@@ -43,7 +52,7 @@ kafka:
       transaction.state.log.min.isr=1
       group.initial.rebalance.delay.ms=0
       group.min.session.timeout.ms=6000
-      group.max.session.timeout.ms=300000
+      group.max.session.timeout.ms=6000
       zookeeper.session.timeout.ms=6000
       replica.lag.time.max.ms=5000
 

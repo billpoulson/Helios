@@ -44,7 +44,9 @@
         "../../test/",
         "--watch",
         "../../packages/**/*.ts"
-      ]
-    }
+      ],
+      "preLaunchTask": "forward-kafka",
+      "postDebugTask": "stop-forward-kafka"
+    },
   ]
 }

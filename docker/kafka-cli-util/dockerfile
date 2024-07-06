@@ -10,13 +10,14 @@ ENV PATH=$PATH:$KAFKA_HOME/bin
 # Install wget, iputils-ping, and netcat
 RUN apt-get update && apt-get install -y wget iputils-ping netcat
 COPY ./scripts/trigger-leader-election /usr/bin
- 
+
 # Download and extract Kafka
 RUN wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 0 https://downloads.apache.org/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz && \
-    tar -xzf kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz && \
-    mv kafka_${SCALA_VERSION}-${KAFKA_VERSION} $KAFKA_HOME && \
-    rm kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
+tar -xzf kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz && \
+mv kafka_${SCALA_VERSION}-${KAFKA_VERSION} $KAFKA_HOME && \
+rm kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
+COPY ./server.properties $KAFKA_HOME
 # Set the working directory
 WORKDIR $KAFKA_HOME
 

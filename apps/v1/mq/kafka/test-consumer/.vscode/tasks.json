@@ -1,0 +1,40 @@
+// .vscode/tasks.json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "forward-kafka",
+            "type": "shell",
+            "command": "wsl kubectl port-forward svc/my-kafka -n kafka-dev 9092:9092 > ${workspaceFolder}/kafka-forward.log 2>&1",
+            "isBackground": true,
+            "problemMatcher": [
+                {
+                    "owner": "forward-kafka",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceFolder}/kafka-forward.log"
+                    ],
+                    "pattern": [
+                        {
+                            "regexp": "disconnected",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ]
+        },
+        {
+            "label": "stop-forward-kafka",
+            "type": "shell",
+            "command": "pkill -f 'kubectl port-forward svc/my-kafka'",
+            "problemMatcher": []
+        }
+    ]
+}

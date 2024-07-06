@@ -4,19 +4,20 @@ import { Kafka, Partitioners, logLevel } from 'kafkajs'
 // Load environment variables from .env file
 dotenv.config();
 const kafka = new Kafka({
-  clientId: process.env.CLIENT_ID,
-  brokers: ['my-kafka.kafka-dev.svc.cluster.local:9092'],
+  clientId: `${process.env.CLIENT_ID}-${+new Date()}`,
+  brokers: [process.env.BROKER],
   logLevel: process.env.LOG_LEVEL as unknown as logLevel,
   sasl: {
-    mechanism: 'scram-sha-256', // Choose your desired scram mechanism
+    mechanism: 'plain', // Choose your desired scram mechanism
     username: process.env.KAFKA_CLIENT_USER,
     password: process.env.KAFKA_CLIENT_PASSWORD,
   },
   ssl: false
 });
 const producer = kafka.producer({
-  createPartitioner: Partitioners.LegacyPartitioner,
+  createPartitioner: Partitioners.DefaultPartitioner,
   allowAutoTopicCreation: true,
+  
 });
 process.on('SIGINT', async () => {
   console.log('Received SIGINT. Disconnecting producer...');
@@ -41,9 +42,21 @@ const run = async () => {
       await new Promise<void>((resolve, reject) => setTimeout(() => resolve(), 1000));
       console.log('tick')
       await producer.send({
-        topic: 'aaa1',
+        topic: 'bx',
         messages: [
-          { value: `Hello KafkaJS user! ${i}` },
+          { value: `bx - Hello KafkaJS user! ${i}` },
+        ],
+      });
+      await producer.send({
+        topic: 'b',
+        messages: [
+          { value: `b - Hello KafkaJS user! ${i}` },
+        ],
+      });
+      await producer.send({
+        topic: 'topic-a',
+        messages: [
+          { value: `topic-a - Hello KafkaJS user! ${i}` },
         ],
       });
       i++;
